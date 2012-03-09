@@ -1,3 +1,5 @@
+TODO
+====
  - Make knob change position on zoom.
  - Make knob draggable
      - divide the slider into zoom-level amount of regions
