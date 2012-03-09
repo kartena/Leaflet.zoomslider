@@ -10,6 +10,10 @@ L.TileJSON = (function() {
         return v.match(semverRegEx); 
     };
 
+   function defined(o){
+        return (typeof o !== "undefined" && o !== null);
+    }
+
     function validateVersion(tileJSON) {
         if (!tileJSON.tilejson) {
             throw new Exception('Missing property "tilejson".');
@@ -37,10 +41,13 @@ L.TileJSON = (function() {
         return cfg;
     }
 
-    function createMapConfig(tileJSON) {
+    function createMapConfig(tileJSON, cfg) {
         validateVersion(tileJSON);
-        cfg = {};
-        
+
+        if (!defined(cfg)){
+	    cfg = {};
+	}
+
         parseZoom(tileJSON, cfg);
         
         if (tileJSON.center) {
@@ -73,9 +80,12 @@ L.TileJSON = (function() {
         return cfg;
     };
 
-    function createTileLayerConfig(tileJSON) {
+    function createTileLayerConfig(tileJSON, cfg) {
         validateVersion(tileJSON);
-        cfg = {};
+
+        if (!defined(cfg)){
+	    cfg = {};
+	}
         
         parseZoom(tileJSON, cfg);
         
@@ -95,10 +105,30 @@ L.TileJSON = (function() {
         return cfg;
     };
 
+
+ 
+
     function createTileLayer(tileJSON) {
         var tileUrl = tileJSON.tiles[0].replace(/\$({[sxyz]})/g, '$1');
         return new L.TileLayer(tileUrl, createTileLayerConfig(tileJSON));
     };
+
+    function createMap(id, tileJSON, options) {
+	var mapConfig;
+	var tileLayerConfig;
+	
+	if(defined(options)){	
+	    mapConfig = options.mapOptions;
+	    tileLayerConfig = options.tileLayerOptions;
+	} else {
+	    mapConfig = {};
+	    tileLayerConfig = {};
+	}
+
+        var mapConfig = createMapConfig(tileJSON, mapConfig);
+        mapConfig.layers = [createTileLayer(tileJSON, tileLayerConfig)];
+        var map = new L.Map(id, mapConfig);
+    }
 
     return {
         createMapConfig: createMapConfig,
@@ -107,10 +137,6 @@ L.TileJSON = (function() {
 
         createTileLayer: createTileLayer,
 
-        createMap: function(id, tileJSON) {
-            var mapConfig = createMapConfig(tileJSON);
-            mapConfig.layers = [createTileLayer(tileJSON)];
-            return new L.Map(id, mapConfig);
-        }
+        createMap: createMap
     }
 }());
