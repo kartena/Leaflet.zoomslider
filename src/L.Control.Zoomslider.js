@@ -1,15 +1,17 @@
 L.Control.Zoomslider = L.Control.extend({
 	options: {
-		position: 'topright'
+		position: 'topleft'
 	},
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoomslider',
 			container = L.DomUtil.create('div', className);
-
+		
 		this._createButton('Zoom in', className + '-in', container, map.zoomIn, map);
 		this._createSlider(className + '-slider', container, map);
 		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
+
+		this._map = map;
 
 		return container;
 	},
@@ -23,7 +25,7 @@ L.Control.Zoomslider = L.Control.extend({
 			x: 0
 			, y: 0
 			, width: 0
-			, height: 145
+			, height: 145 // TODO: Calculate this from div-height or from a setting.
 		};
 		this._sliderHeight = this._bbox.height;
 		this._zoomLevels = map.options.maxZoom;
@@ -64,7 +66,7 @@ L.Control.Zoomslider = L.Control.extend({
 		this._snap();
 	},
 	_onDragEnd: function() {
-		this._snap();
+		this._map.setZoom(this._snap());
 	}, 
 
 	_adjustPointInsideBbox: function(point, bbox) {
@@ -87,7 +89,9 @@ L.Control.Zoomslider = L.Control.extend({
 		L.DomUtil.setPosition(this._knob, this._draggable._newPos);
 	},
 	_snap : function(){
-		this._snapToZoomLevel(this._posToZoomlevel());
+		var zoomLevel = this._posToZoomlevel();
+		this._snapToZoomLevel(zoomLevel);
+		return zoomLevel;
 	},
 	
 	// label: function() {
