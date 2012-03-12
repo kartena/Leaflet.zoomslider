@@ -58,9 +58,6 @@
 	width: 100%;
 }
 
-.leaflet-control-zoomslider-slider-wrap:hover {
-	cursor: pointer;
-}
 
 .leaflet-control-zoomslider-out {
 	background-image: url(images/zoom-out.png);
@@ -77,13 +74,17 @@
 }
 
 .leaflet-control-zoomslider-slider-knob {
-	width: 12px;
+	width: 13px;
 	height:5px;
 	background-color: black;
-	
+	background-position: center;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	margin: auto;
 	border: 5px;
+	position:relative;
+}
+.leaflet-control-zoomslider-slider-knob:hover {
+	cursor: pointer;
 }
