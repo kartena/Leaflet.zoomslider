@@ -1,6 +1,7 @@
 L.Control.Zoomslider = L.Control.extend({
 	options: {
-		position: 'topleft'
+		position: 'topleft',
+		sliderHeight: 162
 	},
 
 	onAdd: function (map) {
@@ -12,7 +13,9 @@ L.Control.Zoomslider = L.Control.extend({
 		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
 
 		this._map = map;
-
+		
+		this._map.on('zoomend', this._snapToMapZoomLevel, this);
+		
 		return container;
 	},
 
@@ -22,15 +25,16 @@ L.Control.Zoomslider = L.Control.extend({
 		var knob = L.DomUtil.create('div', className + '-knob', slider);
 
 		this._bbox = {
-			x: 0
+			  x: 0
 			, y: 0
 			, width: 0
-			, height: 145 // TODO: Calculate this from div-height or from a setting.
+			, height: this.options.sliderHeight
 		};
-		this._sliderHeight = this._bbox.height;
-		this._zoomLevels = map.options.maxZoom;
+		
+		this._zoomLevels = map.getMaxZoom() - map.getMinZoom();
 		this._zoomStep = this._bbox.height / this._zoomLevels;
 		this._makeDraggable(knob);
+		this._snapToMapZoomLevel();
 		this._knob = knob;
 		
 		return slider;
@@ -55,48 +59,51 @@ L.Control.Zoomslider = L.Control.extend({
 			L.DomEvent.addListener(knob, L.Draggable.START, L.DomEvent.stopPropagation);
 			
 			this._draggable = new L.Draggable(knob, knob)
-				.on('predrag', this._onPreDrag, this)
+				.on('drag', this._onDrag, this)
 				.on('dragend', this._onDragEnd, this);
 		}
 		this._draggable.enable();
 	},
 
-	_onPreDrag: function() {
-		this._adjustPointInsideBbox(this._draggable._newPos, this._bbox);
+	_onDrag: function() {
+		var newPos = L.DomUtil.getPosition(this._knob)
+		  , adjustedPos = this._adjustPointInsideBbox(newPos, this._bbox);
+		L.DomUtil.setPosition(this._knob, adjustedPos);
 		this._snap();
 	},
 	_onDragEnd: function() {
-		this._map.setZoom(this._snap());
+		this._map.setZoom(this._posToZoomlevel());
 	}, 
-
+	
 	_adjustPointInsideBbox: function(point, bbox) {
 		var newPoint = new L.Point(
 			Math.min(point.x, bbox.x+bbox.width), 
 			Math.min(point.y, bbox.y+bbox.height));
-		point.x = Math.max(newPoint.x, bbox.x);
-		point.y = Math.max(newPoint.y, bbox.y);
+		newPoint.x = Math.max(newPoint.x, bbox.x);
+		newPoint.y = Math.max(newPoint.y, bbox.y);
 		return newPoint;
 	},
 
 	_posToZoomlevel: function() {
-		var pos = this._draggable._newPos.y,
+		var pos = L.DomUtil.getPosition(this._knob).y,
 			level = Math.round(pos/this._zoomStep);
 		return level;
 	},
 
 	_snapToZoomLevel: function(zoomLevel) {
-		this._draggable._newPos.y = zoomLevel * this._zoomStep;
-		L.DomUtil.setPosition(this._knob, this._draggable._newPos);
+		L.DomUtil.setPosition(  this._knob
+							  , new L.Point(0, zoomLevel * this._zoomStep));
 	},
 	_snap : function(){
 		var zoomLevel = this._posToZoomlevel();
 		this._snapToZoomLevel(zoomLevel);
 		return zoomLevel;
 	},
-	
-	// label: function() {
-	// }
-
+	_snapToMapZoomLevel: function() {
+		if(typeof this._knob !== "undefined" && this._knob !== null) {
+			this._snapToZoomLevel(this._map.getZoom());
+		}
+	}
 });
 
 L.Map.mergeOptions({

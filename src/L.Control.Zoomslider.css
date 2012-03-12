@@ -43,7 +43,7 @@
 }
 
 .leaflet-control-zoomslider-slider-wrap {
-	height: 150px;
+	height: 166px;
 	background-repeat: repeat-y;
 	border-top: 5px solid  rgba(255, 255, 255, 0);
 	border-bottom: 5px solid rgba(255, 255, 255, 0);
@@ -78,9 +78,9 @@
 	height:5px;
 	background-color: black;
 	background-position: center;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
 	margin: auto;
 	border: 5px;
 	position:relative;
