@@ -86,13 +86,13 @@ L.Control.Zoomslider = L.Control.extend({
 
 	_posToZoomlevel: function() {
 		var pos = L.DomUtil.getPosition(this._knob).y,
-			level = Math.round(pos/this._zoomStep);
+		level = Math.round( (this.options.sliderHeight - pos) / this._zoomStep);
 		return level;
 	},
 
 	_snapToZoomLevel: function(zoomLevel) {
 		L.DomUtil.setPosition(  this._knob
-							  , new L.Point(0, zoomLevel * this._zoomStep));
+								, new L.Point(0, this.options.sliderHeight - (zoomLevel * this._zoomStep)));
 	},
 	_snap : function(){
 		var zoomLevel = this._posToZoomlevel();
