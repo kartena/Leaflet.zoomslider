@@ -10,4 +10,6 @@ TODO
      - Change zoom-level when done
  - Factor out the Draggable-stuff to a subclass (DraggableInBBox or something).
  - Celebrate with beer.
- - Make a Pan map control (in another plugin).
+ - <del>Make a Pan map control (in another plugin). (see: [Leaflet.Pancontrol][1])</del>
+
+[1]: https://github.com/mattiasbengtsson/Leaflet.Pancontrol
