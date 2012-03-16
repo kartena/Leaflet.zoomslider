@@ -12,4 +12,4 @@ TODO
  - Celebrate with beer.
  - <del>Make a Pan map control (in another plugin). (see: [Leaflet.Pancontrol][1])</del>
 
-[1]: https://github.com/mattiasbengtsson/Leaflet.Pancontrol
+[1]: https://github.com/kartena/Leaflet.Pancontrol
