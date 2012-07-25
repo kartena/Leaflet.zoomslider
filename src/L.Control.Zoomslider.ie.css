@@ -1,0 +1,20 @@
+.leaflet-control-zoomslider {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
+}
+
+.leaflet-control-zoomslider a, .leaflet-control-zoomslider-slider-wrap {
+	background-color: #eee;
+}
+
+.leaflet-control-zoomslider-slider-wrap {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.leaflet-control-zoomslider a:hover {
+	background-color: #fff;
+}
+
+.leaflet-control-zoomslider-slider {
+	width: 19px;
+}
