@@ -99,17 +99,17 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_posToZoomlevel: function(pos) {
-		pos = !isNaN(pos) 
-			? pos
-			: L.DomUtil.getPosition(this._knob).y;
+		pos = isNaN(pos) 
+			? L.DomUtil.getPosition(this._knob).y
+			: pos
 		return Math.round( (this._sliderHeight - pos) / this.options.stepHeight);
 	},
 
 	_snapToZoomLevel: function(zoomLevel) {
 		if(this._knob) {
-			zoomLevel = !isNaN(zoomLevel) 
-				? zoomLevel
-				: this._map.getZoom();
+			zoomLevel = isNaN(zoomLevel) 
+				? this._map.getZoom()
+				: zoomLevel;
 			var y = this._sliderHeight - (zoomLevel * this.options.stepHeight);
 			L.DomUtil.setPosition(this._knob, new L.Point(0, y));
 		}
