@@ -123,6 +123,11 @@ L.Map.addInitHook(function () {
 	}
 });
 
+L.control.zoomslider = function (options) {
+    return new L.Control.Zoomslider(options);
+};
+
+
 L.BoundedDraggable = L.Draggable.extend({
 	initialize: function(element, dragStartTarget, bounds) {
 		L.Draggable.prototype.initialize.call(this, element, dragStartTarget);
