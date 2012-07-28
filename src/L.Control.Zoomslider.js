@@ -17,7 +17,7 @@ L.Control.Zoomslider = L.Control.extend({
 
 		this._map = map;
 		
-		this._map.on('zoomend', this._snapToZoomLevel, this);
+		this._map.on('zoomend', this._snapToSliderValue, this);
 		
 		return container;
 	},
@@ -34,7 +34,7 @@ L.Control.Zoomslider = L.Control.extend({
 		this._draggable = this._createDraggable();
 		this._draggable.enable();
 
-		this._snapToZoomLevel();
+		this._snapToSliderValue();
 		
 		L.DomEvent
 			.on(slider, 'click', L.DomEvent.stopPropagation)
@@ -79,12 +79,10 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_snap : function(){
-		var zoomLevel = this._posToZoomlevel();
-		this._snapToZoomLevel(zoomLevel);
-		return zoomLevel;
+		this._snapToSliderValue(this._posToSliderValue());
 	},
 	_setZoom: function() {
-		this._map.setZoom(this._posToZoomlevel());
+		this._map.setZoom(this._toZoomLevel(this._posToSliderValue()));
 	},
 
 	_onSliderClick: function(e){
@@ -93,26 +91,35 @@ L.Control.Zoomslider = L.Control.extend({
 			? first.offsetY
 			: L.DomEvent.getMousePosition(first).y 
 			- L.DomUtil.getViewportOffset(this._knob).y;
-		var level = this._posToZoomlevel(offset  - this._knob.offsetHeight / 2);
-		this._snapToZoomLevel(level);
-		this._map.setZoom(level);
+		var value = this._posToSliderValue(offset  - this._knob.offsetHeight / 2);
+		this._snapToSliderValue(value);
+		this._map.setZoom(this._toZoomLevel(value));
 	},
 
-	_posToZoomlevel: function(pos) {
+	_posToSliderValue: function(pos) {
 		pos = isNaN(pos) 
 			? L.DomUtil.getPosition(this._knob).y
 			: pos
 		return Math.round( (this._sliderHeight - pos) / this.options.stepHeight);
 	},
 
-	_snapToZoomLevel: function(zoomLevel) {
+	_snapToSliderValue: function(sliderValue) {
 		if(this._knob) {
-			zoomLevel = isNaN(zoomLevel) 
-				? this._map.getZoom()
-				: zoomLevel;
-			var y = this._sliderHeight - (zoomLevel * this.options.stepHeight);
+			sliderValue = isNaN(sliderValue) 
+				? this._getSliderValue()
+				: sliderValue;
+			var y = this._sliderHeight - (sliderValue * this.options.stepHeight);
 			L.DomUtil.setPosition(this._knob, new L.Point(0, y));
 		}
+	},
+	_toZoomLevel: function(sliderValue) {
+		return sliderValue + this._map.getMinZoom();
+	},
+	_toSliderValue: function(zoomLevel) {
+		return zoomLevel - this._map.getMinZoom();
+	},
+	_getSliderValue: function(){
+		return this._toSliderValue(this._map.getZoom());
 	}
 });
 
