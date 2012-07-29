@@ -2,9 +2,9 @@ Leaflet.zoomslider
 ==================
 
 ### Description
-A simple zoom slider widget for [Leaflet][2]
+A zoom slider widget for [Leaflet][2]
 
-Tested with Chrome, IE 7-9 and Firefox. Read TODO.md for more information.
+Tested with Chrome, IE 7-9 and Firefox. 
 
 Also see [Leaflet.Pancontrol][1]
 
