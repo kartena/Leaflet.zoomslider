@@ -8,8 +8,7 @@ TODO
  - <del>Invert the progress of the zoom slider knob. :P</del>
  - <del>Move knob by pressing on slider</del>
  - <del>Factor out the Draggable-stuff to a subclass (DraggableInBBox or something).</del>
- - Make the zoom slider repeat the background as many times as there are zoom-levels
-     - Make this behaviour optional
+ - <del>Make the zoom slider repeat the background as many times as there are zoom-levels</del>
  - Celebrate with beer.
  - <del>Make a Pan map control (in another plugin). (see: [Leaflet.Pancontrol][1])</del>
 
