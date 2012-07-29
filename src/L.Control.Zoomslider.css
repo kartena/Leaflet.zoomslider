@@ -43,7 +43,6 @@
 }
 
 .leaflet-control-zoomslider-slider-wrap {
-	height: 166px;
 	background-repeat: repeat-y;
 	border-top: 5px solid  rgba(255, 255, 255, 0);
 	border-bottom: 5px solid rgba(255, 255, 255, 0);
@@ -53,7 +52,7 @@
 .leaflet-control-zoomslider-slider {
 	background-image: url(images/zoom-slider.png);	
 	background-repeat: repeat-y;
-	background-position: center;
+	background-position: center 2px;
 	height: 100%;
 	cursor: default;
 }
