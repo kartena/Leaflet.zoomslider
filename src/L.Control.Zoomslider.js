@@ -33,8 +33,6 @@ L.Control.Zoomslider = L.Control.extend({
 
 		this._draggable = this._createDraggable();
 		this._draggable.enable();
-
-		this._snapToSliderValue();
 		
 		L.DomEvent
 			.on(slider, 'click', L.DomEvent.stopPropagation)
@@ -110,7 +108,6 @@ L.Control.Zoomslider = L.Control.extend({
 				: sliderValue;
 			var y = this._sliderHeight 
 				- (sliderValue * this.options.stepHeight);
-				+ this._knob.offsetHeight / 2;
 			L.DomUtil.setPosition(this._knob, new L.Point(0, y));
 		}
 	},
