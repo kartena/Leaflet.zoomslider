@@ -91,7 +91,7 @@ L.Control.Zoomslider = L.Control.extend({
 			? first.offsetY
 			: L.DomEvent.getMousePosition(first).y 
 			- L.DomUtil.getViewportOffset(this._knob).y;
-		var value = this._posToSliderValue(offset  - this._knob.offsetHeight / 2);
+		var value = this._posToSliderValue(offset - this._knob.offsetHeight / 2);
 		this._snapToSliderValue(value);
 		this._map.setZoom(this._toZoomLevel(value));
 	},
@@ -108,7 +108,9 @@ L.Control.Zoomslider = L.Control.extend({
 			sliderValue = isNaN(sliderValue) 
 				? this._getSliderValue()
 				: sliderValue;
-			var y = this._sliderHeight - (sliderValue * this.options.stepHeight);
+			var y = this._sliderHeight 
+				- (sliderValue * this.options.stepHeight);
+				+ this._knob.offsetHeight / 2;
 			L.DomUtil.setPosition(this._knob, new L.Point(0, y));
 		}
 	},
