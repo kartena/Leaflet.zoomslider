@@ -102,6 +102,10 @@ L.TileJSON = (function() {
             cfg.continuousWorld = true;
         }
         
+        if (tileJSON.tilesize) {
+            cfg.tileSize = tileJSON.tilesize;
+        }
+        
         return cfg;
     };
 
@@ -127,7 +131,7 @@ L.TileJSON = (function() {
 
         var mapConfig = createMapConfig(tileJSON, mapConfig);
         mapConfig.layers = [createTileLayer(tileJSON, tileLayerConfig)];
-        var map = new L.Map(id, mapConfig);
+        return new L.Map(id, mapConfig);
     }
 
     return {

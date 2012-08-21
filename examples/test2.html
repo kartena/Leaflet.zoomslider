@@ -18,19 +18,31 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="osm.tilejson.js"></script>
     <script>
-      // The zoomslider will be used by default if you include L.Control.Zoomslider
-      var map = L.TileJSON.createMap('map', osmTileJSON);
+      // Test manual adding and removing of the zoom slider
+      var map = L.TileJSON.createMap('map', osmTileJSON, { 
+          mapOptions: { zoomsliderControl: false }
+      });
 
-      // You can turn it off and add it manually by using the option zoomSliderControl: false
-      // var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false }});
-      // map.addControl(new L.Control.Zoomslider());
+      // Add a zoomend-event. This should remain after the control was removed.
+      var i = 1;
+      map.on("zoomend", function(){
+        console.log("zoomend " + i++);
+      });
 
-      // You can restore the original control by turning the zoomslider off and turning the zoomControl on 
-      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false, zoomControl: true }});
+      var control = new L.Control.Zoomslider();
 
-      // Or turn them both on. 
-      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: true, zoomControl: true }});
-      
+      map.addControl(control);
+
+      // remove the control after two seconds, 
+      // then add it again after another two seconds.
+      // The zoomend-event aboce should fire all the time.
+      setTimeout(function(){
+          map.removeControl(control);
+          setTimeout(function(){
+              map.addControl(control);
+          }, 2000);
+      }, 2000);
+
     </script>
   </body>
 </html>
