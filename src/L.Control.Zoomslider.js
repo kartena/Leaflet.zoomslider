@@ -23,6 +23,10 @@ L.Control.Zoomslider = L.Control.extend({
 		return container;
 	},
 
+	onRemove: function(map){
+		map.off('zoomend', this._snapToSliderValue);
+	},
+	
 	_createSlider: function (className, container, map) {
 		var zoomLevels = map.getMaxZoom() - map.getMinZoom();
 		this._sliderHeight = this.options.stepHeight * zoomLevels;
