@@ -16,6 +16,21 @@
     <script src="../src/L.Control.Zoomslider.js" ></script>
     <script src="lib/leaflet-tilejson.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="script.js"></script>
+    <script src="osm.tilejson.js"></script>
+    <script>
+      // The zoomslider will be used by default if you include L.Control.Zoomslider
+      var map = L.TileJSON.createMap('map', osmTileJSON);
+
+      // You can turn it off and add it manually by using the option zoomSliderControl: false
+      // var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false }});
+      // map.addControl(new L.Control.Zoomslider());
+
+      // You can restore the original control by turning the zoomslider off and turning the zoomControl on 
+      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false, zoomControl: true }});
+
+      // Or turn them both on. 
+      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: true, zoomControl: true }});
+      
+    </script>
   </body>
 </html>
