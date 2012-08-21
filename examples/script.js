@@ -7,7 +7,7 @@ var osmTileJSON = {
     "scheme": "xyz",
     "tiles": [
         "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
-        "http://b.tile.openstreetmap.org/${z}/${x}/${y}png",
+        "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
         "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
     ],
     "minzoom": 5,
@@ -16,7 +16,11 @@ var osmTileJSON = {
     "center": [ 11.9, 57.7, 8 ]
 };
 // The zoomslider will be used by default if you include L.Control.Zoomslider
-var map = L.TileJSON.createMap('map', osmTileJSON); //, { mapOptions: { zoomslider: true }});
+var map = L.TileJSON.createMap('map', osmTileJSON, { 
+	mapOptions: { zoomsliderControl: false }
+});
+
+map.addControl(new L.Control.Zoomslider());
 
 // You can turn it off by using the option zoomSliderControl: false
 // var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false }});

@@ -18,7 +18,8 @@ L.Control.Zoomslider = L.Control.extend({
 		this._map = map;
 		
 		this._map.on('zoomend', this._snapToSliderValue, this);
-		
+
+		this._snapToSliderValue();
 		return container;
 	},
 
