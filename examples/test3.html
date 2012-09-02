@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="lib/leaflet-0.4.0/leaflet.css" />
+    <link rel="stylesheet" href="../src/L.Control.Zoomslider.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="lib/leaflet-0.4.0/leaflet.ie.css" />
+        <link rel="stylesheet" href="../src/L.Control.Zoomslider.ie.css" />
+    <![endif]-->
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="lib/leaflet-0.4.0/leaflet.js"></script>
+    <script src="../src/L.Control.Zoomslider.js" ></script>
+    <script src="lib/leaflet-tilejson.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="osm.tilejson.js"></script>
+    <script>
+
+      var layer1 = L.TileJSON.createTileLayer(osmTileJSON);
+      osmTileJSON.maxzoom = 18;
+      osmTileJSON.minzoom = 0;
+      var layer2 = L.TileJSON.createTileLayer(osmTileJSON);
+      
+      var mapConfig = L.TileJSON.createMapConfig(osmTileJSON);
+      mapConfig.layers = [layer1];
+
+      var map = new L.Map('map', mapConfig);
+
+      L.control.layers({
+          "Few zoomlevels": layer1,
+          "All zoomlevels": layer2
+      }).addTo(map);
+
+    </script>
+  </body>
+</html>
