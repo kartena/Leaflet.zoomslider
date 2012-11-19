@@ -2,13 +2,13 @@ L.Control.Zoomslider = L.Control.extend({
 	options: {
 		position: 'topleft',
 		// height in px of zoom-slider.png
-		stepHeight: 9 
+		stepHeight: 9
 	},
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoomslider',
 			container = L.DomUtil.create('div', className);
-		
+
         this._map = map;
 
 		this._createButton('Zoom in', className + '-in'
@@ -17,18 +17,30 @@ L.Control.Zoomslider = L.Control.extend({
 		this._createButton('Zoom out', className + '-out'
 						   , container, this._zoomOut, this);
 
-		
-		
-		this._map.on('zoomend', this._snapToSliderValue, this);
+		map.on('zoomend', this._snapToSliderValue, this);
+		map.on('layeradd layerremove', this._refresh, this);
 
-		//this._snapToSliderValue();
+		// TODO: map.whenReady in 0.5
+		if(map._loaded){
+			this._snapToSliderValue();
+		} else {
+			map.on('load', this._snapToSliderValue, this);
+		}
+
 		return container;
 	},
 
 	onRemove: function(map){
 		map.off('zoomend', this._snapToSliderValue);
+		map.off('layeradd layerremove', this._refresh);
 	},
-	
+
+	_refresh: function(){
+		this._map
+			.removeControl(this)
+			.addControl(this);
+	},
+
 	_createSlider: function (className, container, map) {
 		var zoomLevels = map.getMaxZoom() - map.getMinZoom();
 		this._sliderHeight = this.options.stepHeight * zoomLevels;
@@ -40,7 +52,7 @@ L.Control.Zoomslider = L.Control.extend({
 
 		this._draggable = this._createDraggable();
 		this._draggable.enable();
-		
+
 		L.DomEvent
 			.on(slider, 'click', L.DomEvent.stopPropagation)
 			.on(slider, 'click', L.DomEvent.preventDefault)
@@ -66,7 +78,7 @@ L.Control.Zoomslider = L.Control.extend({
 			.on(link, 'click', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
 			.on(link, 'click', fn, context);
-		
+
 		return link;
 	},
 
@@ -79,15 +91,15 @@ L.Control.Zoomslider = L.Control.extend({
 			.on(this._knob, 'click', L.DomEvent.stopPropagation);
 
 		var bounds = new L.Bounds(
-			new L.Point(0, 0), 
+			new L.Point(0, 0),
 			new L.Point(0, this._sliderHeight)
 		);
-		var draggable = new L.BoundedDraggable(this._knob, 
-											   this._knob, 
+		var draggable = new L.BoundedDraggable(this._knob,
+											   this._knob,
 											   bounds)
 			.on('drag', this._snap, this)
 			.on('dragend', this._setZoom, this);
-		
+
 		return draggable;
 	},
 
@@ -100,9 +112,9 @@ L.Control.Zoomslider = L.Control.extend({
 
 	_onSliderClick: function(e){
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
-	    var offset = first.offsetY 
+	    var offset = first.offsetY
 			? first.offsetY
-			: L.DomEvent.getMousePosition(first).y 
+			: L.DomEvent.getMousePosition(first).y
 			- L.DomUtil.getViewportOffset(this._knob).y;
 		var value = this._posToSliderValue(offset - this._knob.offsetHeight / 2);
 		this._snapToSliderValue(value);
@@ -110,7 +122,7 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_posToSliderValue: function(pos) {
-		pos = isNaN(pos) 
+		pos = isNaN(pos)
 			? L.DomUtil.getPosition(this._knob).y
 			: pos;
 		return Math.round( (this._sliderHeight - pos) / this.options.stepHeight);
@@ -118,10 +130,10 @@ L.Control.Zoomslider = L.Control.extend({
 
 	_snapToSliderValue: function(sliderValue) {
 		if(this._knob) {
-			sliderValue = isNaN(sliderValue) 
+			sliderValue = isNaN(sliderValue)
 				? this._getSliderValue()
 				: sliderValue;
-			var y = this._sliderHeight 
+			var y = this._sliderHeight
 				- (sliderValue * this.options.stepHeight);
 			L.DomUtil.setPosition(this._knob, new L.Point(0, y));
 		}
@@ -163,7 +175,7 @@ L.BoundedDraggable = L.Draggable.extend({
 				this._newPos = this._fitPoint(this._newPos);
 			}
 		}, this);
-	}, 
+	},
 	_fitPoint: function(point){
 		var closest = new L.Point(
 			Math.min(point.x, this._bounds.max.x),
