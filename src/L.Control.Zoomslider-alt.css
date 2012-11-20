@@ -1,47 +1,50 @@
 /** Slider **/
-.leaflet-control-zoomslider-slider-wrap {
-  background-color: rgba(255, 255, 255, 0.75);
-}
 
 .leaflet-control-zoomslider-slider-wrap {
+  background-color: rgba(255, 255, 255, 0.75);
   background-repeat: repeat-y;
   border-top: 5px solid  rgba(255, 255, 255, 0);
   border-bottom: 5px solid rgba(255, 255, 255, 0);
-  /*margin-bottom: 5px;*/
-}
+  width: 7px;
+  margin: 0 auto;
+  padding-bottom:3px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  border: 1px solid #888;
+  border-top: 0px;
+  border-bottom: 0px;
+  }
 
 .leaflet-control-zoomslider-slider {
-  background-image: url(images/zoom-slider.png);
   background-repeat: repeat-y;
   background-position: center 2px;
   height: 100%;
   cursor: default;
-}
+  }
 
 .leaflet-control-zoomslider-slider-knob {
-  width: 14px;
-  height:5px;
+  width: 13px;
+  height:2px;
   background-color: black;
   background-position: center;
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
-  border-radius: 15px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
   margin: auto;
-  border: 5px;
+  border: 1px solid black;
   position:relative;
-}
+  margin-left: -6px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  border: 3px solid white;
+  }
+
 .leaflet-control-zoomslider-slider-knob:hover {
   cursor: pointer;
-}
+  }
 
 /** Leaflet Zoom Styles **/
 .leaflet-container .leaflet-control-zoomslider {
   margin-left: 13px;
   margin-top: 12px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
-  border: 1px solid #888;
-  -webkit-border-radius: 5px;
-          border-radius: 5px;
   }
 .leaflet-control-zoomslider a {
   width: 22px;
@@ -50,6 +53,8 @@
   text-align: center;
   text-decoration: none;
   color: black;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  border: 1px solid #888;
   }
 .leaflet-control-zoomslider a {
   background-position: 50% 50%;
