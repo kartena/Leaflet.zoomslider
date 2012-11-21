@@ -156,10 +156,10 @@ L.Control.Zoomslider = L.Control.extend({
 		L.DomUtil.removeClass(this._zoomInButton, className);
 		L.DomUtil.removeClass(this._zoomOutButton, className);
 
-		if (map._zoom === map.getMinZoom()) {
+		if (map.getZoom() === map.getMinZoom()) {
 			L.DomUtil.addClass(this._zoomOutButton, className);
 		}
-		if (map._zoom === map.getMaxZoom()) {
+		if (map.getZoom() === map.getMaxZoom()) {
 			L.DomUtil.addClass(this._zoomInButton, className);
 		}
 	}
@@ -172,8 +172,7 @@ L.Map.mergeOptions({
 
 L.Map.addInitHook(function () {
     if (this.options.zoomsliderControl) {
-		this.zoomsliderControl = new L.Control.Zoomslider();
-		this.addControl(this.zoomsliderControl);
+		L.control.zoomslider().addTo(this);
 	}
 });
 
