@@ -9,23 +9,20 @@ L.Control.Zoomslider = L.Control.extend({
 		var className = 'leaflet-control-zoomslider',
 				container = L.DomUtil.create('div', className);
 
-    this._map = map;
+		this._map = map;
 
 		this._zoomInButton = this._createButton('+', 'Zoom in', className + '-in'
-						   , container, this._zoomIn , this);
+												, container, this._zoomIn , this);
 		this._createSlider(className + '-slider', container, map);
 		this._zoomOutButton = this._createButton('-', 'Zoom out', className + '-out'
-						   , container, this._zoomOut, this);
-
-		map.on('zoomend', this._snapToSliderValue, this);
+												 , container, this._zoomOut, this);
+		
 		map.on('layeradd layerremove', this._refresh, this);
 
-		// TODO: map.whenReady in 0.5
-		if(map._loaded){
+		map.whenReady(function(){
 			this._snapToSliderValue();
-		} else {
-			map.on('load', this._snapToSliderValue, this);
-		}
+			map.on('zoomend', this._snapToSliderValue, this);
+		}, this);
 
 		return container;
 	},
