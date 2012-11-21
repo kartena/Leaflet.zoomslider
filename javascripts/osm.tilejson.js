@@ -11,7 +11,7 @@ window.osmTileJSON = {
         "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
     ],
     "minzoom": 0,
-    "maxzoom": 18,
+    "maxzoom": 16,
     "bounds": [ -180, -85, 180, 85 ],
     "center": [ 11.9, 57.7, 8 ]
 };
