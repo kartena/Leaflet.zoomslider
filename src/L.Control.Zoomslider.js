@@ -9,6 +9,11 @@ L.Control.Zoomslider = L.Control.extend({
 		var className = 'leaflet-control-zoomslider',
 				container = L.DomUtil.create('div', className);
 
+		L.DomEvent
+			.on(container, 'click', L.DomEvent.stopPropagation)
+			.on(container, 'mousedown', L.DomEvent.stopPropagation)
+			.on(container, 'dblclick', L.DomEvent.stopPropagation);
+		
 		this._map = map;
 
 		this._zoomInButton = this._createButton('+', 'Zoom in', className + '-in'
@@ -50,10 +55,7 @@ L.Control.Zoomslider = L.Control.extend({
 		this._draggable = this._createDraggable();
 		this._draggable.enable();
 
-		L.DomEvent
-			.on(slider, 'click', L.DomEvent.stopPropagation)
-			.on(slider, 'click', L.DomEvent.preventDefault)
-			.on(slider, 'click', this._onSliderClick, this);
+		L.DomEvent.on(slider, 'click', this._onSliderClick, this);
 
 		return slider;
 	},
@@ -73,9 +75,6 @@ L.Control.Zoomslider = L.Control.extend({
 		link.title = title;
 
 		L.DomEvent
-		    .on(link, 'click', L.DomEvent.stopPropagation)
-		    .on(link, 'mousedown', L.DomEvent.stopPropagation)
-		    .on(link, 'dblclick', L.DomEvent.stopPropagation)
 		    .on(link, 'click', L.DomEvent.preventDefault)
 		    .on(link, 'click', fn, context);
 
