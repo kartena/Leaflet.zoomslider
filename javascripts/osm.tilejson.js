@@ -10,8 +10,8 @@ window.osmTileJSON = {
         "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
         "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
     ],
-    "minzoom": 0,
-    "maxzoom": 16,
+    "minzoom": 2,
+    "maxzoom": 18,
     "bounds": [ -180, -85, 180, 85 ],
     "center": [ 11.9, 57.7, 8 ]
 };
