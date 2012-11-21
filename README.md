@@ -1,4 +1,4 @@
-Leaflet.zoomslider
+[Leaflet.zoomslider](http://kartena.github.com/Leaflet.zoomslider/)
 ==================
 
 ### Description
