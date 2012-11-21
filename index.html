@@ -7,10 +7,14 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.css" />
+	<link rel="stylesheet" href="lib/Leaflet.zoomslider/src/L.Control.Zoomslider.css" />
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.ie.css" />
+		<link rel="stylesheet" href="lib/Leaflet.zoomslider/src/L.Control.Zoomslider.ie.css" />
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   </head>
   <body>
     <div class="wrapper">
@@ -22,28 +26,34 @@
 
 
         <ul>
-          <li><a href="https://github.com/kartena/Leaflet.zoomslider/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/kartena/Leaflet.zoomslider/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/kartena/Leaflet.zoomslider/zipball/0.4">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/kartena/Leaflet.zoomslider/tarball/0.4">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/kartena/Leaflet.zoomslider">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
         <h1>Leaflet.zoomslider</h1>
 
-<h3>Description</h3>
+		<h3>Description</h3>
 
-<p>A zoom slider widget for <a href="https://github.com/CloudMade/Leaflet">Leaflet</a></p>
+		<p>A zoom slider widget for <a href="https://github.com/CloudMade/Leaflet">Leaflet</a></p>
 
-<p>Tested with Chrome, IE 7-9 and Firefox. </p>
+		<p>Tested with Chrome, IE 7-9 and Firefox. </p>
 
-<p>Also see <a href="https://github.com/kartena/Leaflet.Pancontrol">Leaflet.Pancontrol</a></p>
+		<div id="map" style="width:540px; height: 360px;"></div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/kartena">kartena</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
+	<!-- SCRIPTS -->
     <script src="javascripts/scale.fix.js"></script>
-    
+    <script src="javascripts/osm.tilejson.js"></script>
+	<script src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js"></script>
+    <script src="lib/leaflet-tilejson/src/tilejson.js"></script>
+    <script src="lib/Leaflet.zoomslider/src/L.Control.Zoomslider.js"></script>
+	
+	<script>L.TileJSON.createMap('map', osmTileJSON);</script>
   </body>
 </html>
