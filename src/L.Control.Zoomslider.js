@@ -112,7 +112,7 @@ L.Control.Zoomslider = L.Control.extend({
 	_posToSliderValue: function(pos) {
 		pos = isNaN(pos) 
 			? L.DomUtil.getPosition(this._knob).y
-			: pos
+			: pos;
 		return Math.round( (this._sliderHeight - pos) / this.options.stepHeight);
 	},
 
