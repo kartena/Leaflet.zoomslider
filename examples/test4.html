@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="../src/L.Control.Zoomslider.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="lib/leaflet/leaflet.ie.css" />
+        <link rel="stylesheet" href="../src/L.Control.Zoomslider.ie.css" />
+    <![endif]-->
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="lib/leaflet/leaflet-src.js"></script>
+    <script src="../src/L.Control.Zoomslider.js" ></script>
+    <script src="lib/leaflet-tilejson.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="osm.tilejson.js"></script>
+    <script>
+	  
+	  /* 
+		   1. Test that the zoomslider works even if we have no tilelayer
+		   2. Test that it also works fine when we later add it
+	  */
+
+      var mapConfig = L.TileJSON.createMapConfig(osmTileJSON);
+      mapConfig.layers = [];
+	  mapConfig.maxZoom = undefined;
+	  mapConfig.minZoom = undefined;
+	  
+      var map = new L.Map('map', mapConfig);
+	  setTimeout(function(){
+	      map.addLayer(L.TileJSON.createTileLayer(osmTileJSON));
+	  }, 4000);
+    </script>
+  </body>
+</html>
