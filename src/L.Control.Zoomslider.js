@@ -7,13 +7,10 @@ L.Control.Zoomslider = L.Control.extend({
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoomslider',
-				container = L.DomUtil.create('div', className);
+			container = L.DomUtil.create('div', className);
 
-		L.DomEvent
-			.on(container, 'click', L.DomEvent.stopPropagation)
-			.on(container, 'mousedown', L.DomEvent.stopPropagation)
-			.on(container, 'dblclick', L.DomEvent.stopPropagation);
-		
+		L.DomEvent.disableClickPropagation(container);
+
 		this._map = map;
 
 		this._zoomInButton = this._createButton('+', 'Zoom in', className + '-in'
@@ -21,7 +18,7 @@ L.Control.Zoomslider = L.Control.extend({
 		this._createSlider(className + '-slider', container, map);
 		this._zoomOutButton = this._createButton('-', 'Zoom out', className + '-out'
 												 , container, this._zoomOut, this);
-		
+
 		map.on('layeradd layerremove', this._refresh, this);
 
 		map.whenReady(function(){
@@ -45,6 +42,11 @@ L.Control.Zoomslider = L.Control.extend({
 
 	_createSlider: function (className, container, map) {
 		var zoomLevels = map.getMaxZoom() - map.getMinZoom();
+		// This means we have no tilelayers (or that they are setup in a strange way).
+		// Either way we don't want to add a slider here.
+		if(zoomLevels == Infinity){
+			return undefined;
+		}
 		this._sliderHeight = this.options.stepHeight * zoomLevels;
 
 		var wrapper =  L.DomUtil.create('div', className + '-wrap', container);
@@ -82,16 +84,12 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_createDraggable: function() {
-		L.DomUtil.setPosition(this._knob, new L.Point(0, 0));
-		L.DomEvent
-			.on(this._knob
-				, L.Draggable.START
-				, L.DomEvent.stopPropagation)
-			.on(this._knob, 'click', L.DomEvent.stopPropagation);
+		L.DomUtil.setPosition(this._knob, L.point(0, 0));
+		L.DomEvent.disableClickPropagation(this._knob);
 
 		var bounds = new L.Bounds(
-			new L.Point(0, 0),
-			new L.Point(0, this._sliderHeight)
+			L.point(0, 0),
+			L.point(0, this._sliderHeight)
 		);
 		var draggable = new L.BoundedDraggable(this._knob,
 											   this._knob,
@@ -135,7 +133,7 @@ L.Control.Zoomslider = L.Control.extend({
 				: sliderValue;
 			var y = this._sliderHeight
 				- (sliderValue * this.options.stepHeight);
-			L.DomUtil.setPosition(this._knob, new L.Point(0, y));
+			L.DomUtil.setPosition(this._knob, L.point(0, y));
 		}
 	},
 	_toZoomLevel: function(sliderValue) {
@@ -191,7 +189,7 @@ L.BoundedDraggable = L.Draggable.extend({
 		}, this);
 	},
 	_fitPoint: function(point){
-		var closest = new L.Point(
+		var closest = L.point(
 			Math.min(point.x, this._bounds.max.x),
 			Math.min(point.y, this._bounds.max.y)
 		);
