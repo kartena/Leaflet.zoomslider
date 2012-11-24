@@ -7,13 +7,10 @@ L.Control.Zoomslider = L.Control.extend({
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoomslider',
-				container = L.DomUtil.create('div', className);
+			container = L.DomUtil.create('div', className);
 
-		L.DomEvent
-			.on(container, 'click', L.DomEvent.stopPropagation)
-			.on(container, 'mousedown', L.DomEvent.stopPropagation)
-			.on(container, 'dblclick', L.DomEvent.stopPropagation);
-		
+		L.DomEvent.disableClickPropagation(container);
+
 		this._map = map;
 
 		this._zoomInButton = this._createButton('+', 'Zoom in', className + '-in'
@@ -21,7 +18,7 @@ L.Control.Zoomslider = L.Control.extend({
 		this._createSlider(className + '-slider', container, map);
 		this._zoomOutButton = this._createButton('-', 'Zoom out', className + '-out'
 												 , container, this._zoomOut, this);
-		
+
 		map.on('layeradd layerremove', this._refresh, this);
 
 		map.whenReady(function(){
@@ -83,11 +80,7 @@ L.Control.Zoomslider = L.Control.extend({
 
 	_createDraggable: function() {
 		L.DomUtil.setPosition(this._knob, new L.Point(0, 0));
-		L.DomEvent
-			.on(this._knob
-				, L.Draggable.START
-				, L.DomEvent.stopPropagation)
-			.on(this._knob, 'click', L.DomEvent.stopPropagation);
+		L.DomEvent.disableClickPropagation(this._knob);
 
 		var bounds = new L.Bounds(
 			new L.Point(0, 0),
