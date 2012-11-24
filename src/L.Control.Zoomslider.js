@@ -42,6 +42,11 @@ L.Control.Zoomslider = L.Control.extend({
 
 	_createSlider: function (className, container, map) {
 		var zoomLevels = map.getMaxZoom() - map.getMinZoom();
+		// This means we have no tilelayers (or that they are setup in a strange way).
+		// Either way we don't want to add a slider here.
+		if(zoomLevels == Infinity){
+			return undefined;
+		}
 		this._sliderHeight = this.options.stepHeight * zoomLevels;
 
 		var wrapper =  L.DomUtil.create('div', className + '-wrap', container);
