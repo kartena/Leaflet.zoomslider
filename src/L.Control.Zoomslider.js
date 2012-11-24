@@ -79,12 +79,12 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_createDraggable: function() {
-		L.DomUtil.setPosition(this._knob, new L.Point(0, 0));
+		L.DomUtil.setPosition(this._knob, L.point(0, 0));
 		L.DomEvent.disableClickPropagation(this._knob);
 
 		var bounds = new L.Bounds(
-			new L.Point(0, 0),
-			new L.Point(0, this._sliderHeight)
+			L.point(0, 0),
+			L.point(0, this._sliderHeight)
 		);
 		var draggable = new L.BoundedDraggable(this._knob,
 											   this._knob,
@@ -128,7 +128,7 @@ L.Control.Zoomslider = L.Control.extend({
 				: sliderValue;
 			var y = this._sliderHeight
 				- (sliderValue * this.options.stepHeight);
-			L.DomUtil.setPosition(this._knob, new L.Point(0, y));
+			L.DomUtil.setPosition(this._knob, L.point(0, y));
 		}
 	},
 	_toZoomLevel: function(sliderValue) {
@@ -184,7 +184,7 @@ L.BoundedDraggable = L.Draggable.extend({
 		}, this);
 	},
 	_fitPoint: function(point){
-		var closest = new L.Point(
+		var closest = L.point(
 			Math.min(point.x, this._bounds.max.x),
 			Math.min(point.y, this._bounds.max.y)
 		);
