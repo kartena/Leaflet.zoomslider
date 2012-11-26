@@ -66,12 +66,18 @@
   -webkit-border-radius: 5px 5px 0 0;
           border-radius: 5px 5px 0 0;
   }
+.leaflet-control-zoomslider-in:after{
+  content:"+"
+}
 .leaflet-control-zoomslider-out {
   border-top: 1px solid #aaa;
   font: bold 23px/20px Tahoma, Verdana, sans-serif;
   -webkit-border-radius: 0 0 5px 5px;
           border-radius: 0 0 5px 5px;
   }
+.leaflet-control-zoomslider-out:after{
+  content:"-"
+}
 .leaflet-control-zoomslider a.leaflet-control-zoomslider-disabled {
   cursor: default;
   background-color: rgba(255, 255, 255, 0.8);
