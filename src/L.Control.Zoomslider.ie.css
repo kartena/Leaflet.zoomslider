@@ -1,20 +1,23 @@
-.leaflet-control-zoomslider {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
-}
 
 .leaflet-control-zoomslider a, .leaflet-control-zoomslider-slider-wrap {
 	background-color: #eee;
 }
-
+.leaflet-control-zoomslider a:hover {
+	background-color: #fff;
+}
 .leaflet-control-zoomslider-slider-wrap {
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-.leaflet-control-zoomslider a:hover {
-	background-color: #fff;
-}
 
+/* IE7 specific hacks */
 .leaflet-control-zoomslider-slider {
-	width: 19px;
+	*width: 23px;
+}
+.leaflet-control-zoomslider-in {
+	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '+');
+}
+.leaflet-control-zoomslider-out {
+	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '-');
 }
