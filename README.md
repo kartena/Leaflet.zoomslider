@@ -4,7 +4,7 @@
 ### Description
 A zoom slider widget for [Leaflet][2]
 
-Tested with Chrome, IE 7-9 and Firefox. 
+Tested with Chrome, IE 6-9 and Firefox. 
 
 Also see [Leaflet.Pancontrol][1]
 
