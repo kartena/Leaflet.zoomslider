@@ -1,49 +1,31 @@
-
 .leaflet-control-zoomslider {
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
-}
-.leaflet-control-zoomslider {
 	padding: 5px;
 	background: rgba(0, 0, 0, 0.25);
 }
-.leaflet-control-zoomslider a, .leaflet-control-zoomslider-slider-wrap {
+.leaflet-control-zoomslider a,
+.leaflet-control-zoomslider-slider-wrap {
 	background-color: rgba(255, 255, 255, 0.75);
-}
-
-.leaflet-control-zoomslider a, 
-.leaflet-control-layers a, 
-.leaflet-control-zoomslider > div, 
-.leaflet-control-layers > div {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	display: block;
-}
-
-.leaflet-control-zoomslider a { 
 	width: 19px;
-	height: 19px;
-}
-
-.leaflet-control-zoomslider a,
-.leaflet-control-zoomslider-slider-wrap {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
 }
 
-.leaflet-control-zoomslider a:hover{
+.leaflet-control-zoomslider a { 
+	height: 19px;
+}
+
+.leaflet-control-zoomslider  a:hover{
 	background-color: #fff;
 }
 
-.leaflet-touch .leaflet-control-zoomslider a {
-	width: 27px;
-	height: 27px;
-}
-
 .leaflet-control-zoomslider-slider-wrap {
-	background-repeat: repeat-y;
 	border-top: 5px solid  rgba(255, 255, 255, 0);
 	border-bottom: 5px solid rgba(255, 255, 255, 0);
 	margin-bottom: 5px;
@@ -57,19 +39,12 @@
 	cursor: default;
 }
 
-
 .leaflet-control-zoomslider-out {
 	background-image: url(images/zoom-out.png);
 }
 .leaflet-control-zoomslider-in {
 	background-image: url(images/zoom-in.png);
 	margin-bottom: 5px;
-}
-
-.leaflet-zoomslider-box {
-	border: 2px dotted #05f;
-	background: white;
-	opacity: 0.5;
 }
 
 .leaflet-control-zoomslider-slider-knob {
@@ -86,4 +61,13 @@
 }
 .leaflet-control-zoomslider-slider-knob:hover {
 	cursor: pointer;
+}
+
+/* Touch */
+.leaflet-touch .leaflet-control-zoomslider a {
+	height: 27px;	
+}
+.leaflet-touch .leaflet-control-zoomslider a,  
+.leaflet-touch .leaflet-control-zoomslider div, {
+	width: 27px;
 }
