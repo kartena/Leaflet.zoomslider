@@ -3,23 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="lib/Leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="../src/L.Control.Zoomslider.css" />
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="lib/leaflet/leaflet.ie.css" />
+        <link rel="stylesheet" href="lib/Leaflet/dist/leaflet.ie.css" />
         <link rel="stylesheet" href="../src/L.Control.Zoomslider.ie.css" />
     <![endif]-->
   </head>
   <body>
     <div id="map"></div>
-    <script src="lib/leaflet/leaflet-src.js"></script>
+    <script src="lib/Leaflet/dist/leaflet-src.js"></script>
     <script src="../src/L.Control.Zoomslider.js" ></script>
-    <script src="lib/leaflet-tilejson.js"></script>
+    <script src="lib/leaflet-tilejson/src/tilejson.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="osm.tilejson.js"></script>
     <script>
       // Test manual adding of the zoom slider after 2 seconds
-      var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false }});
+      var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomsliderControl: false }});
       setTimeout(function(){
           map.addControl(new L.Control.Zoomslider());
       }, 2000);
