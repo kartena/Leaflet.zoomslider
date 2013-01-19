@@ -2,26 +2,28 @@ L.Control.Zoomslider = L.Control.extend({
 	options: {
 		position: 'topleft',
 		// height in px of zoom-slider.png
-		stepHeight: 9
+		stepHeight: 9,
+		styleNS: 'leaflet-control-zoomslider'
 	},
 
 	onAdd: function (map) {
-		var className = 'leaflet-control-zoomslider',
-			container = L.DomUtil.create('div', className);
+		var container = L.DomUtil.create('div', this.options.styleNS + ' leaflet-bar');
 
 		L.DomEvent.disableClickPropagation(container);
 
 		this._map = map;
 
-		this._zoomInButton = this._createButton('Zoom in', className + '-in'
-												, container, this._zoomIn , this);
-		this._createSlider(className + '-slider', container, map);
-		this._zoomOutButton = this._createButton('Zoom out', className + '-out'
-												 , container, this._zoomOut, this);
+		this._zoomInButton = this._createZoomButton(
+			'in', 'top', container, this._zoomIn);
+
+		this._createSlider(container, map);
+
+		this._zoomOutButton = this._createZoomButton(
+			'out', 'bottom', container, this._zoomOut);
 
 		map.on('layeradd layerremove', this._refresh, this);
 
-		map.whenReady(function(){
+		map.whenReady(function () {
 			this._snapToSliderValue();
 			map.on('zoomend', this._snapToSliderValue, this);
 		}, this);
@@ -29,37 +31,39 @@ L.Control.Zoomslider = L.Control.extend({
 		return container;
 	},
 
-	onRemove: function(map){
+	onRemove: function (map) {
 		map.off('zoomend', this._snapToSliderValue);
 		map.off('layeradd layerremove', this._refresh);
 	},
 
-	_refresh: function(){
+	_refresh: function () {
 		this._map
 			.removeControl(this)
 			.addControl(this);
 	},
 
-	_createSlider: function (className, container, map) {
+	_createSlider: function (container, map) {
 		var zoomLevels = map.getMaxZoom() - map.getMinZoom();
 		// This means we have no tilelayers (or that they are setup in a strange way).
 		// Either way we don't want to add a slider here.
 		if(zoomLevels == Infinity){
-			return undefined;
+			return;
 		}
+
 		this._sliderHeight = this.options.stepHeight * zoomLevels;
 
-		var wrapper =  L.DomUtil.create('div', className + '-wrap', container);
-		wrapper.style.height = (this._sliderHeight + 5) + "px";
-		var slider = L.DomUtil.create('div', className, wrapper);
-		this._knob = L.DomUtil.create('div', className + '-knob', slider);
+		var sliderClass = this.options.styleNS + '-slider',
+			slider =  L.DomUtil.create('div', sliderClass + ' leaflet-bar-part', container);
+		slider.style.height = (this._sliderHeight + 5) + "px";
+		var body = L.DomUtil.create('div',
+									sliderClass + '-body',
+									slider);
+		this._knob = L.DomUtil.create('div', sliderClass + '-knob', body);
 
 		this._draggable = this._createDraggable();
 		this._draggable.enable();
 
-		L.DomEvent.on(slider, 'click', this._onSliderClick, this);
-
-		return slider;
+		L.DomEvent.on(body, 'click', this._onSliderClick, this);
 	},
 
 	_zoomIn: function (e) {
@@ -70,8 +74,17 @@ L.Control.Zoomslider = L.Control.extend({
 	    this._map.zoomOut(e.shiftKey ? 3 : 1);
 	},
 
-	_createButton: function (title, className, container, fn, context) {
-		var link = L.DomUtil.create('a', className, container);
+	_createZoomButton: function (zoomDir, end, container, fn) {
+		var barPart = 'leaflet-bar-part',
+			classes = this.options.styleNS + '-' + zoomDir
+				+ ' ' + barPart
+				+ ' ' + barPart + '-' + end,
+			title = 'Zoom ' + zoomDir;
+		return this._createButton(title, classes, container, fn, this);
+	},
+
+	_createButton: function (title, classDef, container, fn, context) {
+		var link = L.DomUtil.create('a', classDef, container);
 		link.href = '#';
 		link.title = title;
 
@@ -135,19 +148,19 @@ L.Control.Zoomslider = L.Control.extend({
 			L.DomUtil.setPosition(this._knob, L.point(0, y));
 		}
 	},
-	_toZoomLevel: function(sliderValue) {
+	_toZoomLevel: function (sliderValue) {
 		return sliderValue + this._map.getMinZoom();
 	},
-	_toSliderValue: function(zoomLevel) {
+	_toSliderValue: function (zoomLevel) {
 		return zoomLevel - this._map.getMinZoom();
 	},
-	_getSliderValue: function(){
+	_getSliderValue: function () {
 		return this._toSliderValue(this._map.getZoom());
 	},
 
 	_updateDisabled: function () {
 		var map = this._map,
-			className = 'leaflet-control-zoomslider-disabled';
+			className = this.options.styleNS + '-disabled';
 
 		L.DomUtil.removeClass(this._zoomInButton, className);
 		L.DomUtil.removeClass(this._zoomOutButton, className);
@@ -178,7 +191,7 @@ L.control.zoomslider = function (options) {
 
 
 L.BoundedDraggable = L.Draggable.extend({
-	initialize: function(element, dragStartTarget, bounds) {
+	initialize: function (element, dragStartTarget, bounds) {
 		L.Draggable.prototype.initialize.call(this, element, dragStartTarget);
 		this._bounds = bounds;
 		this.on('predrag', function() {
@@ -187,7 +200,7 @@ L.BoundedDraggable = L.Draggable.extend({
 			}
 		}, this);
 	},
-	_fitPoint: function(point){
+	_fitPoint: function (point) {
 		var closest = L.point(
 			Math.min(point.x, this._bounds.max.x),
 			Math.min(point.y, this._bounds.max.y)

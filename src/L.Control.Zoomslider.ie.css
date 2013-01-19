@@ -1,18 +1,18 @@
 
-.leaflet-control-zoomslider a, .leaflet-control-zoomslider-slider-wrap {
+.leaflet-control-zoomslider a, .leaflet-control-zoomslider-slider {
 	background-color: #eee;
 }
 .leaflet-control-zoomslider a:hover {
 	background-color: #fff;
 }
-.leaflet-control-zoomslider-slider-wrap {
+.leaflet-control-zoomslider-slider {
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
 
 /* IE7 specific hacks */
-.leaflet-control-zoomslider-slider {
+.leaflet-control-zoomslider-slider-body {
 	*width: 23px;
 }
 .leaflet-control-zoomslider-in {
