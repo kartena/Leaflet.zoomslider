@@ -11,10 +11,16 @@
 }
 
 
-/* IE7 specific hacks */
-.leaflet-control-zoomslider-slider-body {
+/* IE6-7 specific hacks */
+.leaflet-control-zoomslider-slider {
 	*width: 23px;
 }
+/* Fix IE6-divs having a too large min height  */
+.leaflet-control-zoomslider-slider-knob {
+	*overflow: hidden;
+}
+
+/* Support for element:after { content: 'text' }  */
 .leaflet-control-zoomslider-in {
 	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '+');
 }
