@@ -1,4 +1,5 @@
 L.Control.Zoomslider = (function(){
+
 	var BoundedDraggable = L.Draggable.extend({
 		initialize: function (element, dragStartTarget, bounds) {
 			L.Draggable.prototype.initialize.call(this, element, dragStartTarget);
@@ -23,6 +24,7 @@ L.Control.Zoomslider = (function(){
 		}
 	});
 
+
 	var Slider = L.Class.extend({
 		includes: L.Mixin.Events,
 
@@ -30,60 +32,80 @@ L.Control.Zoomslider = (function(){
 			stepHeight: 9,
 			styleNS: "leaflet-control-zoomslider-slider"
 		},
-		
+
 		initialize: function (element, steps, value) {
 			this._height = this.options.stepHeight * steps;
-			var slider =  L.DomUtil.create('div', 
-										   this.options.styleNS 
-										   + ' leaflet-bar-part', 
-										   element);
-			slider.style.height = (this._height + 5) + "px"; // Eh, why 5?
-			var body = L.DomUtil.create('div',
-										this.options.styleNS + '-body',
-										slider);
-			this._knob = this._createKnob(body);
-			// .on('drag', this._snap, this)
-			// .on('dragend', this._setZoom, this)
+
+			this._body = L.DomUtil.create('div',
+										  this.options.styleNS + '-body',
+										  element);
+			this._body.style.height = this._height + "px";
+			L.DomEvent.on(this._body, 'click', this._onClick, this);
+			this._knob = this._createKnob(this._body);
+			this._knob.enable();
+
+			this.setValue(value);
 		},
-		
+
 		setValue: function (value) {
-			var y = this._height - (value * this.options.stepHeight);
-			L.DomUtil.setPosition(this._knob.getElement(), L.point(0, y));
+			this._setKnobPos(this._valueToPos(value));
 		},
-		// getValue: function() { ... } ?
-		
+		getValue: function() {
+			return this._posToValue(this._getKnobPos());
+		},
+
 		_createKnob: function (parent) {
 			var elem = L.DomUtil.create('div', this.options.styleNS + '-knob', parent);
-			L.DomUtil.setPosition(elem, L.point(0, 0)); // Why?
 			L.DomEvent.disableClickPropagation(elem);
 
-			var bounds = new L.Bounds(L.point(0, 0), 
+			var bounds = new L.Bounds(L.point(0, 0),
 									  L.point(0, this._height));
-			return new L.BoundedDraggable(elem, elem, bounds);
+			return new BoundedDraggable(elem, elem, bounds)
+				.on('drag', function () {
+					this._setKnobPos(this._snap(this._getKnobPos()));
+				}, this)
+				.on('dragend', function () {
+					this.fire("update", { value: this.getValue() } );
+				}, this);
 		},
-		
+
 		_onClick: function (e) {
 			var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
-			var offset = first.offsetY
-					? first.offsetY
-					: L.DomEvent.getMousePosition(first).y
-					- L.DomUtil.getViewportOffset(this._knob.getElement()).y;
-			var value = this._posToValue(offset - this._knob.getElement().offsetHeight / 2);
-			this.setValue(value);
-			this.fire("update", { value: value } );
+			var y = L.DomEvent.getMousePosition(first).y
+					- L.DomUtil.getViewportOffset(this._body).y; // Cache this?
+			this._setKnobPos(this._snap(y));
+			this.fire("update", { value: this.getValue() } );
 		},
-		
+
 		// Helpers
-		
+		_getKnobPos: function () {
+			return L.DomUtil.getPosition(this._knob.getElement()).y
+				+ this._knob.getElement().offsetHeight/2;
+		},
+		_setKnobPos: function (pos) {
+			L.DomUtil.setPosition(
+				this._knob.getElement(),
+				L.point(0, pos - this._knob.getElement().offsetHeight/2)
+			);
+		},
+
+		_snap: function(pos) {
+			var h = this.options.stepHeight,
+				mod = pos % h;
+			return mod < h / 2
+				? pos - mod
+				: pos - mod + h;
+		},
+		// Assumes a snapped pos
 		_posToValue: function(pos) {
-			pos = isNaN(pos)
-				? L.DomUtil.getPosition(this._knob).y
-				: pos;
-			return Math.round( (this._height - pos) / this.options.stepHeight);
+			return (this._height - pos) / this.options.stepHeight;
+		},
+		_valueToPos: function(value){
+			return this._height - (value * this.options.stepHeight);
 		}
 	});
-	
-	return L.Control.extend({
+
+	var Zoomslider = L.Control.extend({
 		options: {
 			position: 'topleft',
 			// height in px of zoom-slider.png
@@ -101,60 +123,52 @@ L.Control.Zoomslider = (function(){
 			this._zoomInButton = this._createZoomButton(
 				'in', 'top', container, this._zoomIn);
 
-			this._createSlider(container, map);
+			this._sliderElem = L.DomUtil.create(
+				'div',
+				this.options.styleNS + "-slider leaflet-bar-part",
+				container);
 
 			this._zoomOutButton = this._createZoomButton(
 				'out', 'bottom', container, this._zoomOut);
 
-			map.on('layeradd layerremove', this._refresh, this);
-
-			map.whenReady(function () {
-				this._snapToSliderValue();
-				map.on('zoomend', this._snapToSliderValue, this);
-			}, this);
+			map .on('layeradd layerremove', this._refresh, this)
+				.on("zoomend", this._updateSlider, this)
+				.on("zoomend", this._updateDisabled, this)
+				.whenReady(this._createSlider, this);
 
 			return container;
 		},
 
 		onRemove: function (map) {
-			map.off('zoomend', this._snapToSliderValue);
-			map.off('layeradd layerremove', this._refresh);
+			map .off("zoomend", this._updateSlider)
+				.off("zoomend", this._updateDisabled)
+				.off('layeradd layerremove', this._refresh);
 		},
 
 		_refresh: function () {
+			// TODO: just refresh the slider
 			this._map
 				.removeControl(this)
 				.addControl(this);
 		},
 
-		_createSlider: function (container, map) {
-			var zoomLevels = map.getMaxZoom() - map.getMinZoom();
+		_createSlider: function () {
+			var zoomLevels = this._map.getMaxZoom() - this._map.getMinZoom();
 			// This means we have no tilelayers (or that they are setup in a strange way).
 			// Either way we don't want to add a slider here.
 			if(zoomLevels == Infinity){
 				return;
 			}
-
-			this._sliderHeight = this.options.stepHeight * zoomLevels;
-
-			var sliderClass = this.options.styleNS + '-slider',
-				slider =  L.DomUtil.create('div', sliderClass + ' leaflet-bar-part', container);
-			slider.style.height = (this._sliderHeight + 5) + "px";
-			var body = L.DomUtil.create('div',
-										sliderClass + '-body',
-										slider);
-			this._knob = L.DomUtil.create('div', sliderClass + '-knob', body);
-
-			this._draggable = this._createDraggable();
-			this._draggable.enable();
-
-			L.DomEvent.on(body, 'click', this._onSliderClick, this);
+			this._slider = new Slider(
+				this._sliderElem,
+				zoomLevels,
+				this._toSliderValue(this._map.getZoom())
+			).on("update", this._updateZoom, this);
 		},
 
 		_zoomIn: function (e) {
 			this._map.zoomIn(e.shiftKey ? 3 : 1);
 		},
-
 		_zoomOut: function (e) {
 			this._map.zoomOut(e.shiftKey ? 3 : 1);
 		},
@@ -179,70 +193,20 @@ L.Control.Zoomslider = (function(){
 
 			return link;
 		},
-
-		_createDraggable: function() {
-			L.DomUtil.setPosition(this._knob, L.point(0, 0));
-			L.DomEvent.disableClickPropagation(this._knob);
-
-			var bounds = new L.Bounds(
-				L.point(0, 0),
-				L.point(0, this._sliderHeight)
-			);
-			var draggable = new L.BoundedDraggable(this._knob,
-												   this._knob,
-												   bounds)
-					.on('drag', this._snap, this)
-					.on('dragend', this._setZoom, this);
-
-			return draggable;
-		},
-
-		_snap : function(){
-			this._snapToSliderValue(this._posToSliderValue());
-		},
-		_setZoom: function() {
-			this._map.setZoom(this._toZoomLevel(this._posToSliderValue()));
-		},
-
-		_onSliderClick: function(e){
-			var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
-			var offset = first.offsetY
-					? first.offsetY
-					: L.DomEvent.getMousePosition(first).y
-					- L.DomUtil.getViewportOffset(this._knob).y;
-			var value = this._posToSliderValue(offset - this._knob.offsetHeight / 2);
-			this._snapToSliderValue(value);
-			this._map.setZoom(this._toZoomLevel(value));
-		},
-
-		_posToSliderValue: function(pos) {
-			pos = isNaN(pos)
-				? L.DomUtil.getPosition(this._knob).y
-				: pos;
-			return Math.round( (this._sliderHeight - pos) / this.options.stepHeight);
-		},
-
-		_snapToSliderValue: function(sliderValue) {
-			this._updateDisabled();
-			if(this._knob) {
-				sliderValue = isNaN(sliderValue)
-					? this._getSliderValue()
-					: sliderValue;
-				var y = this._sliderHeight
-						- (sliderValue * this.options.stepHeight);
-				L.DomUtil.setPosition(this._knob, L.point(0, y));
-			}
-		},
 		_toZoomLevel: function (sliderValue) {
 			return sliderValue + this._map.getMinZoom();
 		},
 		_toSliderValue: function (zoomLevel) {
 			return zoomLevel - this._map.getMinZoom();
 		},
-		_getSliderValue: function () {
-			return this._toSliderValue(this._map.getZoom());
+		_updateZoom: function(e){
+			this._map.setZoom(this._toZoomLevel(e.value));
 		},
-
+		_updateSlider: function(){
+			if(this._slider){
+				this._slider.setValue(this._toSliderValue(this._map.getZoom()));
+			}
+		},
 		_updateDisabled: function () {
 			var map = this._map,
 				className = this.options.styleNS + '-disabled';
@@ -258,8 +222,8 @@ L.Control.Zoomslider = (function(){
 			}
 		}
 	});
-});
-
+	return Zoomslider;
+})();
 
 L.Map.mergeOptions({
     zoomControl: false,
@@ -275,5 +239,3 @@ L.Map.addInitHook(function () {
 L.control.zoomslider = function (options) {
     return new L.Control.Zoomslider(options);
 };
-
-
