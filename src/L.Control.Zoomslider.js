@@ -34,6 +34,7 @@ L.Control.Zoomslider = (function(){
 		},
 
 		initialize: function (element, steps, value) {
+			this._steps = steps;
 			this._height = this.options.stepHeight * steps;
 
 			this._body = L.DomUtil.create('div',
@@ -52,6 +53,9 @@ L.Control.Zoomslider = (function(){
 		},
 		getValue: function() {
 			return this._posToValue(this._getKnobPos());
+		},
+		getSteps: function(){
+			return this._steps;
 		},
 
 		_createKnob: function (parent) {
@@ -90,11 +94,8 @@ L.Control.Zoomslider = (function(){
 		},
 
 		_snap: function(pos) {
-			var h = this.options.stepHeight,
-				mod = pos % h;
-			return mod < h / 2
-				? pos - mod
-				: pos - mod + h;
+			var step = this.options.stepHeight;
+			return step * Math.round(pos / step);
 		},
 		// Assumes a snapped pos
 		_posToValue: function(pos) {
@@ -134,7 +135,8 @@ L.Control.Zoomslider = (function(){
 			map .on('layeradd layerremove', this._refresh, this)
 				.on("zoomend", this._updateSlider, this)
 				.on("zoomend", this._updateDisabled, this)
-				.whenReady(this._createSlider, this);
+				.whenReady(this._createSlider, this)
+				.whenReady(this._updateDisabled, this);
 
 			return container;
 		},
@@ -147,13 +149,18 @@ L.Control.Zoomslider = (function(){
 
 		_refresh: function () {
 			// TODO: just refresh the slider
-			this._map
-				.removeControl(this)
-				.addControl(this);
+			if(!this._slider || this._slider.getSteps() !== this._zoomLevels() ){
+				this._map
+					.removeControl(this)
+					.addControl(this);
+			}
+		},
+		_zoomLevels: function(){
+			return this._map.getMaxZoom() - this._map.getMinZoom();
 		},
 
 		_createSlider: function () {
-			var zoomLevels = this._map.getMaxZoom() - this._map.getMinZoom();
+			var zoomLevels = this._zoomLevels();
 			// This means we have no tilelayers (or that they are setup in a strange way).
 			// Either way we don't want to add a slider here.
 			if(zoomLevels == Infinity){
@@ -175,21 +182,17 @@ L.Control.Zoomslider = (function(){
 
 		_createZoomButton: function (zoomDir, end, container, fn) {
 			var barPart = 'leaflet-bar-part',
-				classes = this.options.styleNS + '-' + zoomDir
+				classDef = this.options.styleNS + '-' + zoomDir
 					+ ' ' + barPart
 					+ ' ' + barPart + '-' + end,
-				title = 'Zoom ' + zoomDir;
-			return this._createButton(title, classes, container, fn, this);
-		},
-
-		_createButton: function (title, classDef, container, fn, context) {
-			var link = L.DomUtil.create('a', classDef, container);
+				title = 'Zoom ' + zoomDir,
+				link = L.DomUtil.create('a', classDef, container);
 			link.href = '#';
 			link.title = title;
 
 			L.DomEvent
 				.on(link, 'click', L.DomEvent.preventDefault)
-				.on(link, 'click', fn, context);
+				.on(link, 'click', fn, this);
 
 			return link;
 		},
