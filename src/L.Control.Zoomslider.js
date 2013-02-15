@@ -84,12 +84,12 @@ L.Control.Zoomslider = (function(){
 		// Helpers
 		_getKnobPos: function () {
 			return L.DomUtil.getPosition(this._knob.getElement()).y
-				+ this._knob.getElement().offsetHeight/2;
+				+ Math.floor(this._knob.getElement().offsetHeight/2);
 		},
 		_setKnobPos: function (pos) {
 			L.DomUtil.setPosition(
 				this._knob.getElement(),
-				L.point(0, pos - this._knob.getElement().offsetHeight/2)
+				L.point(0, pos - Math.floor(this._knob.getElement().offsetHeight/2))
 			);
 		},
 
