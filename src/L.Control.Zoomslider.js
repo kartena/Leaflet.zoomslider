@@ -46,7 +46,7 @@ L.Control.Zoomslider = L.Control.extend({
 		var zoomLevels = map.getMaxZoom() - map.getMinZoom();
 		// This means we have no tilelayers (or that they are setup in a strange way).
 		// Either way we don't want to add a slider here.
-		if(zoomLevels == Infinity){
+		if(zoomLevels == Infinity) {
 			return;
 		}
 
@@ -67,18 +67,18 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_zoomIn: function (e) {
-	    this._map.zoomIn(e.shiftKey ? 3 : 1);
+		this._map.zoomIn(e.shiftKey ? 3 : 1);
 	},
 
 	_zoomOut: function (e) {
-	    this._map.zoomOut(e.shiftKey ? 3 : 1);
+		this._map.zoomOut(e.shiftKey ? 3 : 1);
 	},
 
 	_createZoomButton: function (zoomDir, end, container, fn) {
 		var barPart = 'leaflet-bar-part',
-			classes = this.options.styleNS + '-' + zoomDir
-				+ ' ' + barPart
-				+ ' ' + barPart + '-' + end,
+			classes = this.options.styleNS + '-' + zoomDir +
+				' ' + barPart +
+				' ' + barPart + '-' + end,
 			title = 'Zoom ' + zoomDir;
 		return this._createButton(title, classes, container, fn, this);
 	},
@@ -104,61 +104,61 @@ L.Control.Zoomslider = L.Control.extend({
 			L.point(0, this._sliderHeight)
 		);
 		var draggable = new L.BoundedDraggable(this._knob,
-											   this._knob,
-											   bounds)
+		    this._knob,
+		    bounds)
 			.on('drag', this._snap, this)
 			.on('dragend', this._setZoom, this);
 
 		return draggable;
 	},
 
-	_snap : function(){
+	_snap : function() {
 		this._snapToSliderValue(this._posToSliderValue());
 	},
 	_setZoom: function() {
 		this._map.setZoom(this._toZoomLevel(this._posToSliderValue()));
 	},
 
-	_onSliderClick: function(e){
+	_onSliderClick: function(e) {
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
-	    var offset = first.offsetY
-			? first.offsetY
-			: L.DomEvent.getMousePosition(first).y
-			- L.DomUtil.getViewportOffset(this._knob).y;
+	    var offset = first.offsetY ?
+			first.offsetY :
+			L.DomEvent.getMousePosition(first).y -
+			L.DomUtil.getViewportOffset(this._knob).y;
 		var value = this._posToSliderValue(offset - this._knob.offsetHeight / 2);
 		this._snapToSliderValue(value);
 		this._map.setZoom(this._toZoomLevel(value));
 	},
 
 	_posToSliderValue: function(pos) {
-		pos = isNaN(pos)
-			? L.DomUtil.getPosition(this._knob).y
-			: pos;
+		pos = isNaN(pos) ?
+			L.DomUtil.getPosition(this._knob).y :
+			pos;
 		return Math.round( (this._sliderHeight - pos) / this.options.stepHeight);
 	},
 
 	_snapToSliderValue: function(sliderValue) {
 		this._updateDisabled();
 		if(this._knob) {
-			sliderValue = isNaN(sliderValue)
-				? this._getSliderValue()
-				: sliderValue;
-			var y = this._sliderHeight
-				- (sliderValue * this.options.stepHeight);
+			sliderValue = isNaN(sliderValue) ?
+				this._getSliderValue() :
+				sliderValue;
+			var y = this._sliderHeight -
+				(sliderValue * this.options.stepHeight);
 			L.DomUtil.setPosition(this._knob, L.point(0, y));
 		}
 	},
-	_toZoomLevel: function (sliderValue) {
+	_toZoomLevel: function(sliderValue) {
 		return sliderValue + this._map.getMinZoom();
 	},
-	_toSliderValue: function (zoomLevel) {
+	_toSliderValue: function(zoomLevel) {
 		return zoomLevel - this._map.getMinZoom();
 	},
-	_getSliderValue: function () {
+	_getSliderValue: function() {
 		return this._toSliderValue(this._map.getZoom());
 	},
 
-	_updateDisabled: function () {
+	_updateDisabled: function() {
 		var map = this._map,
 			className = this.options.styleNS + '-disabled';
 
@@ -179,20 +179,20 @@ L.Map.mergeOptions({
     zoomsliderControl: true
 });
 
-L.Map.addInitHook(function () {
+L.Map.addInitHook(function() {
     if (this.options.zoomsliderControl) {
         this.zoomsliderControl = new L.Control.Zoomslider();
         this.addControl(this.zoomsliderControl);
     }
 });
 
-L.control.zoomslider = function (options) {
+L.control.zoomslider = function(options) {
     return new L.Control.Zoomslider(options);
 };
 
 
 L.BoundedDraggable = L.Draggable.extend({
-	initialize: function (element, dragStartTarget, bounds) {
+	initialize: function(element, dragStartTarget, bounds) {
 		L.Draggable.prototype.initialize.call(this, element, dragStartTarget);
 		this._bounds = bounds;
 		this.on('predrag', function() {
@@ -201,7 +201,7 @@ L.BoundedDraggable = L.Draggable.extend({
 			}
 		}, this);
 	},
-	_fitPoint: function (point) {
+	_fitPoint: function(point) {
 		var closest = L.point(
 			Math.min(point.x, this._bounds.max.x),
 			Math.min(point.y, this._bounds.max.y)
