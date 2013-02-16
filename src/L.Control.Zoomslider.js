@@ -30,8 +30,8 @@ L.Control.Zoomslider = (function(){
 			return (y - this._m) / this._k;
 		},
 		// v = (y - m) / k
-		_toY: function (v) {
-			return this._k * v + this._m;
+		_toY: function (value) {
+			return this._k * value + this._m;
 		},
 
 		setPosition: function (y) {
@@ -79,6 +79,8 @@ L.Control.Zoomslider = (function(){
 				.on("zoomend", this._updateSlider, this)
 				.on("zoomend", this._updateDisabled, this)
 				.whenReady(this._createSlider, this)
+				.whenReady(this._createKnob, this)
+				.whenReady(this._updateSlider, this)
 				.whenReady(this._updateDisabled, this);
 
 			return container;
@@ -101,8 +103,7 @@ L.Control.Zoomslider = (function(){
 		},
 
 		_createSlider: function () {
-			var bodyElem,
-				knobElem,
+			var knobElem,
 				zoomLevels = this._zoomLevels();
 
 			// This means we have no tilelayers (or that they are setup in a strange way).
@@ -111,20 +112,31 @@ L.Control.Zoomslider = (function(){
 				return;
 			}
 
-			bodyElem = L.DomUtil.create('div',
-									this.options.styleNS + '-body',
-									this._sliderElem);
-			bodyElem.style.height = (this.options.stepHeight * zoomLevels) + "px";
-			L.DomEvent.on(bodyElem, 'click', this._onClick, this);
+			this._sliderBody = L.DomUtil.create('div',
+												this.options.styleNS + '-slider-body',
+												this._sliderElem);
+			this._sliderBody.style.height
+				= (this.options.stepHeight * zoomLevels) + "px";
+			L.DomEvent.on(this._sliderBody, 'click', this._onSliderClick, this);
 
-			knobElem = L.DomUtil.create('div', this.options.styleNS + '-knob', bodyElem);
-			L.DomEvent.disableClickPropagation(knobElem);
+		},
 
-			this._knob = new Knob(knobElem, zoomLevels, this.options.stepHeight)
-				.on('dragend', function () {
-					this._map.setZoom(this._toZoomLevel(this._knob.getValue()));
-				}, this)
-				.enable();
+		_createKnob: function(){
+			var elem = L.DomUtil.create('div', this.options.styleNS + '-slider-knob',
+										this._sliderBody);
+			L.DomEvent.disableClickPropagation(elem);
+
+			this._knob = new Knob(elem, this._zoomLevels(), this.options.stepHeight)
+				.on('dragend', this._updateZoom, this);
+			this._knob.enable();
+		},
+
+		_onSliderClick: function (e) {
+			var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
+			var y = L.DomEvent.getMousePosition(first).y
+	  				- L.DomUtil.getViewportOffset(this._sliderBody).y; // Cache this?
+			this._knob.setPosition(y);
+			this._updateZoom();
 		},
 
 		_zoomIn: function (e) {
@@ -156,8 +168,14 @@ L.Control.Zoomslider = (function(){
 		_toSliderValue: function (zoomLevel) {
 			return zoomLevel - this._map.getMinZoom();
 		},
+
+		_updateZoom: function(){
+			this._map.setZoom(this._toZoomLevel(this._knob.getValue()));
+		},
 		_updateSlider: function(){
-			this._knob.setValue(this._toSliderValue(this._map.getZoom()));
+			if(this._knob){
+				this._knob.setValue(this._toSliderValue(this._map.getZoom()));
+			}
 		},
 		_updateDisabled: function () {
 			var map = this._map,
