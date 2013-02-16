@@ -1,29 +1,55 @@
 L.Control.Zoomslider = (function(){
 
-	var BoundedDraggable = L.Draggable.extend({
-		initialize: function (element, dragStartTarget, bounds) {
-			L.Draggable.prototype.initialize.call(this, element, dragStartTarget);
-			this._bounds = bounds;
+	// TODO: remove some cpu cycles
+	var Knob = L.Draggable.extend({
+		initialize: function (element, steps, stepHeight) {
+			L.Draggable.prototype.initialize.call(this, element, element);
+
+			this._element = element;
+			this._maxValue = steps - 1;
+			this._initConversion(steps, stepHeight);
+
 			this.on('predrag', function() {
-				if(!this._bounds.contains(this._newPos)){
-					this._newPos = this._fitPoint(this._newPos);
-				}
+				this._newPos.x = 0;
+				this._newPos.y = this._adjust(this._newPos.y);
 			}, this);
 		},
-		_fitPoint: function (point) {
-			var closest = L.point(
-				Math.min(point.x, this._bounds.max.x),
-				Math.min(point.y, this._bounds.max.y)
-			);
-			closest.x = Math.max(closest.x, this._bounds.min.x);
-			closest.y = Math.max(closest.y, this._bounds.min.y);
-			return closest;
+		_initConversion: function (steps, stepHeight) {
+			var sliderHeight = steps * stepHeight,
+				knobHeight = 5 ; // this._element.offsetHeight; // TODO: Not inited yet. fix
+			this._knobOffset = (stepHeight + knobHeight) / 2;
+			this._k = -stepHeight;
+			this._m = sliderHeight - this._knobOffset;
 		},
-		getElement: function () {
-			return this._element;
+		_adjust: function (y) {
+			var value = Math.round(this._yToValue(y));
+			value = Math.max(0, Math.min(this._maxValue, value));
+			return this._valueToY(value);
+		},
+		// y = k*v + m
+		_yToValue: function (y){
+			return (y - this._m) / this._k;
+		},
+		// v = (y - m) / k
+		_valueToY: function(v){
+			return this._k * v + this._m;
+		},
+
+		setPosition: function(y){
+			L.DomUtil.setPosition(this._element,
+								  L.point(0, this._adjust(y)));
+		},
+
+		setValue: function (v) {
+			var y = this._valueToY(v);
+			L.DomUtil.setPosition(this._element, L.point(0, y));
+		},
+
+		getValue: function () {
+			var y = L.DomUtil.getPosition(this._element).y;
+			return this._yToValue(y);
 		}
 	});
-
 
 	var Slider = L.Class.extend({
 		includes: L.Mixin.Events,
@@ -49,10 +75,10 @@ L.Control.Zoomslider = (function(){
 		},
 
 		setValue: function (value) {
-			this._setKnobPos(this._valueToPos(value));
+			this._knob.setValue(value);
 		},
 		getValue: function() {
-			return this._posToValue(this._getKnobPos());
+			return this._knob.getValue();
 		},
 		getSteps: function(){
 			return this._steps;
@@ -62,14 +88,9 @@ L.Control.Zoomslider = (function(){
 			var elem = L.DomUtil.create('div', this.options.styleNS + '-knob', parent);
 			L.DomEvent.disableClickPropagation(elem);
 
-			var bounds = new L.Bounds(L.point(0, 0),
-									  L.point(0, this._height));
-			return new BoundedDraggable(elem, elem, bounds)
-				.on('drag', function () {
-					this._setKnobPos(this._snap(this._getKnobPos()));
-				}, this)
+			return new Knob(elem, this._steps, this.options.stepHeight)
 				.on('dragend', function () {
-					this.fire("update", { value: this.getValue() } );
+					this.fire("update", { value: this._knob.getValue() } );
 				}, this);
 		},
 
@@ -77,32 +98,9 @@ L.Control.Zoomslider = (function(){
 			var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
 			var y = L.DomEvent.getMousePosition(first).y
 					- L.DomUtil.getViewportOffset(this._body).y; // Cache this?
-			this._setKnobPos(this._snap(y));
-			this.fire("update", { value: this.getValue() } );
-		},
 
-		// Helpers
-		_getKnobPos: function () {
-			return L.DomUtil.getPosition(this._knob.getElement()).y
-				+ Math.floor(this._knob.getElement().offsetHeight/2);
-		},
-		_setKnobPos: function (pos) {
-			L.DomUtil.setPosition(
-				this._knob.getElement(),
-				L.point(0, pos - Math.floor(this._knob.getElement().offsetHeight/2))
-			);
-		},
-
-		_snap: function(pos) {
-			var step = this.options.stepHeight;
-			return step * Math.round(pos / step);
-		},
-		// Assumes a snapped pos
-		_posToValue: function(pos) {
-			return (this._height - pos) / this.options.stepHeight;
-		},
-		_valueToPos: function(value){
-			return this._height - (value * this.options.stepHeight);
+			this._knob.setPosition(y);
+			this.fire("update", { value: this._knob.getValue() } );
 		}
 	});
 
@@ -136,6 +134,7 @@ L.Control.Zoomslider = (function(){
 				.on("zoomend", this._updateSlider, this)
 				.on("zoomend", this._updateDisabled, this)
 				.whenReady(this._createSlider, this)
+				//.whenReady(this._updateSlider, this)
 				.whenReady(this._updateDisabled, this);
 
 			return container;
@@ -156,7 +155,7 @@ L.Control.Zoomslider = (function(){
 			}
 		},
 		_zoomLevels: function(){
-			return this._map.getMaxZoom() - this._map.getMinZoom();
+			return this._map.getMaxZoom() - this._map.getMinZoom() + 1;
 		},
 
 		_createSlider: function () {
