@@ -1,9 +1,8 @@
 L.Control.Zoomslider = (function(){
 
 	var Knob = L.Draggable.extend({
-		initialize: function (element, steps, stepHeight) {
-			var sliderHeight = steps * stepHeight,
-				knobHeight = 5 ; // element.offsetHeight; // TODO: Not inited yet. fix
+		initialize: function (element, steps, stepHeight, knobHeight) {
+			var sliderHeight = steps * stepHeight;
 			L.Draggable.prototype.initialize.call(this, element, element);
 
 			this._element = element;
@@ -52,8 +51,10 @@ L.Control.Zoomslider = (function(){
 	var Zoomslider = L.Control.extend({
 		options: {
 			position: 'topleft',
-			// height in px of zoom-slider.png
+			// Height of zoom-slider.png in px
 			stepHeight: 9,
+			// Height of the knob div in px
+			knobHeight: 5,
 			styleNS: 'leaflet-control-zoomslider'
 		},
 
@@ -131,7 +132,10 @@ L.Control.Zoomslider = (function(){
 										this._sliderBody);
 			L.DomEvent.disableClickPropagation(knobElem);
 
-			this._knob = new Knob(knobElem, this._zoomLevels(), this.options.stepHeight)
+			this._knob = new Knob(knobElem,
+								  this._zoomLevels(),
+								  this.options.stepHeight,
+								  this.options.knobHeight)
 				.on('dragend', this._updateZoom, this);
 			this._knob.enable();
 		},
