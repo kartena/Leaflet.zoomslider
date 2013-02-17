@@ -10,6 +10,7 @@ L.Control.Zoomslider = (function(){
 			this._maxValue = steps - 1;
 
 			// conversion parameters
+			// the conversion is just a common linear function.
 			this._k = -stepHeight;
 			this._m = sliderHeight - (stepHeight + knobHeight) / 2;
 
@@ -26,12 +27,12 @@ L.Control.Zoomslider = (function(){
 		},
 
 		// y = k*v + m
-		_toValue: function (y) {
-			return (y - this._m) / this._k;
-		},
-		// v = (y - m) / k
 		_toY: function (value) {
 			return this._k * value + this._m;
+		},
+		// v = (y - m) / k
+		_toValue: function (y) {
+			return (y - this._m) / this._k;
 		},
 
 		setPosition: function (y) {
@@ -40,8 +41,7 @@ L.Control.Zoomslider = (function(){
 		},
 
 		setValue: function (v) {
-			L.DomUtil.setPosition(this._element,
-								  L.point(0, this._toY(v)));
+			this.setPosition(this._toY(v));
 		},
 
 		getValue: function () {
@@ -103,11 +103,9 @@ L.Control.Zoomslider = (function(){
 		},
 
 		_createSlider: function () {
-			var knobElem,
-				zoomLevels = this._zoomLevels();
+			var zoomLevels = this._zoomLevels();
 
-			// This means we have no tilelayers (or that they are setup in a strange way).
-			// Either way we don't want to add a slider here.
+			// No tilelayer probably
 			if(zoomLevels == Infinity){
 				return;
 			}
@@ -118,15 +116,22 @@ L.Control.Zoomslider = (function(){
 			this._sliderBody.style.height
 				= (this.options.stepHeight * zoomLevels) + "px";
 			L.DomEvent.on(this._sliderBody, 'click', this._onSliderClick, this);
-
 		},
 
-		_createKnob: function(){
-			var elem = L.DomUtil.create('div', this.options.styleNS + '-slider-knob',
-										this._sliderBody);
-			L.DomEvent.disableClickPropagation(elem);
+		_createKnob: function () {
+			var knobElem,
+				zoomLevels = this._zoomLevels();
 
-			this._knob = new Knob(elem, this._zoomLevels(), this.options.stepHeight)
+			// No tilelayer probably
+			if(zoomLevels == Infinity) {
+				return;
+			}
+
+			knobElem = L.DomUtil.create('div', this.options.styleNS + '-slider-knob',
+										this._sliderBody);
+			L.DomEvent.disableClickPropagation(knobElem);
+
+			this._knob = new Knob(knobElem, this._zoomLevels(), this.options.stepHeight)
 				.on('dragend', this._updateZoom, this);
 			this._knob.enable();
 		},
