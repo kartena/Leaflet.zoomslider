@@ -1,0 +1,4 @@
+src/*.js
+src/*.css
+examples/*.html
+examples/*.js
