@@ -23,8 +23,26 @@
 	/*border: 5px; */
 	position:relative;
 }
-.leaflet-control-zoomslider-slider-knob:hover {
+
+.leaflet-control-zoomslider-slider-body:hover {
 	cursor: pointer;
+}
+
+.leaflet-control-zoomslider-slider-knob:hover {
+	cursor: default;
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+}
+
+.leaflet-dragging .leaflet-control-zoomslider,
+.leaflet-dragging .leaflet-control-zoomslider-slider,
+.leaflet-dragging .leaflet-control-zoomslider-slider-body, 
+.leaflet-dragging .leaflet-control-zoomslider a,
+.leaflet-dragging .leaflet-control-zoomslider a.leaflet-control-zoomslider-disabled,
+.leaflet-dragging .leaflet-control-zoomslider-slider-knob:hover  {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
 }
 
 /** Leaflet Zoom Styles **/
