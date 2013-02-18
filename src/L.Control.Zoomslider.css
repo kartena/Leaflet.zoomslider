@@ -7,7 +7,7 @@
 .leaflet-control-zoomslider-slider-body {
 	background-image: url(images/zoom-slider.png);
 	background-repeat: repeat-y;
-	background-position: center 2px;
+	background-position: center 0px;
 	height: 100%;
 	cursor: default;
 }
@@ -17,10 +17,10 @@
 	height:5px;
 	background-color: black;
 	background-position: center;
-	-webkit-border-radius: 15px;
+ 	-webkit-border-radius: 15px;
 	border-radius: 15px;
 	margin-left: 5px;
-	border: 5px;
+	/*border: 5px; */
 	position:relative;
 }
 .leaflet-control-zoomslider-slider-knob:hover {
