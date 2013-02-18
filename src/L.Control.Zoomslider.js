@@ -211,7 +211,8 @@ L.Map.mergeOptions({
 
 L.Map.addInitHook(function () {
     if (this.options.zoomsliderControl) {
-		L.control.zoomslider().addTo(this);
+		this.zoomsliderControl = new L.Control.Zoomslider();
+		this.addControl(this.zoomsliderControl);
 	}
 });
 
