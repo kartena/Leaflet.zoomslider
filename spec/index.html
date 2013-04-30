@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>L.Control.Zoomslider Spec</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+  <div id="mocha"></div>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/expect.js/expect.js"></script>
+  <script src="../examples/lib/Leaflet/dist/leaflet-src.js"></script>
+  <script src="../src/L.Control.Zoomslider.js" ></script>
+  <script src="../examples/lib/leaflet-tilejson/src/tilejson.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="../examples/osm.tilejson.js"></script>
+  <script>mocha.setup('bdd')</script>
+
+  <script src="zoomslider_leaflet_control_spec.js"></script>
+  <script src="zooming_spec.js"></script>
+  <script>
+    mocha.run();
+  </script>
+</body>
+</html>
