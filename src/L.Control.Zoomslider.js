@@ -76,7 +76,7 @@ L.Control.Zoomslider = (function(){
 			this._zoomOutButton = this._createZoomButton(
 				'out', 'bottom', container, this._zoomOut);
 
-			map .on('layeradd layerremove', this._refresh, this)
+			map .on('zoomlevelschange', this._refresh, this)
 				.on("zoomend", this._updateSlider, this)
 				.on("zoomend", this._updateDisabled, this)
 				.whenReady(this._createSlider, this)
@@ -90,11 +90,10 @@ L.Control.Zoomslider = (function(){
 		onRemove: function (map) {
 			map .off("zoomend", this._updateSlider)
 				.off("zoomend", this._updateDisabled)
-				.off('layeradd layerremove', this._refresh);
+				.off('zoomlevelschange', this._refresh);
 		},
 
 		_refresh: function () {
-			// TODO: listen to zoomlevelschange-event instead in 0.6.x
 			this._map
 				.removeControl(this)
 				.addControl(this);
