@@ -9,14 +9,14 @@ describe('Zooming behavior', function() {
     it('Should be able to zoom in', function() {
       map.setZoom(16);
       expect(map.getZoom()).to.eql(16);
-      map.zoomsliderControl._zoomInButton.click();
+      happen.click( map.zoomsliderControl._zoomInButton );
       expect(map.getZoom()).to.eql(17);
     });
 
     it('Should be able to zoom out', function() {
       map.setZoom(16);
       expect(map.getZoom()).to.eql(16);
-      map.zoomsliderControl._zoomOutButton.click();
+      happen.click( map.zoomsliderControl._zoomOutButton );
       expect(map.getZoom()).to.eql(15);
     });
   });
