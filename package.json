@@ -8,7 +8,8 @@
 		"karma": "~0.8.0",
 		"uglify-js": "~2.2.5",
 		"jake": "~0.5.10",
-		"expect.js": "~0.2.0"
+		"expect.js": "~0.2.0",
+		"grunt": "~0.4.1"
 	},
 	"main": "src/L.Control.Zoomslider.js",
 	"repository": {
