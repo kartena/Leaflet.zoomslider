@@ -16,6 +16,7 @@ files = [
   '../src/L.Control.Zoomslider.js',
   '../examples/lib/leaflet-tilejson/src/tilejson.js',
   '../examples/osm.tilejson.js',
+  'before.js',
   './**/*_spec.js'
 ];
 
