@@ -1,17 +1,12 @@
 L.Control.Zoomslider = (function(){
 
 	var Knob = L.Draggable.extend({
-		initialize: function (element, steps, stepHeight, knobHeight) {
-			var sliderHeight = steps * stepHeight;
+		initialize: function (element, stepHeight, knobHeight) {
 			L.Draggable.prototype.initialize.call(this, element, element);
-
 			this._element = element;
-			this._maxValue = steps - 1;
 
-			// conversion parameters
-			// the conversion is just a common linear function.
-			this._k = -stepHeight;
-			this._m = sliderHeight - (stepHeight + knobHeight) / 2;
+			this._stepHeight = stepHeight;
+			this._knobHeight = knobHeight;
 
 			this.on('predrag', function() {
 				this._newPos.x = 0;
@@ -34,6 +29,19 @@ L.Control.Zoomslider = (function(){
 			return (y - this._m) / this._k;
 		},
 
+		setSteps: function(steps) {
+			var sliderHeight = steps * this._stepHeight;
+			this._maxValue = steps - 1;
+
+			// conversion parameters
+			// the conversion is just a common linear function.
+			this._k = -this._stepHeight;
+			this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
+			
+			// Update the value so that we're inside the new slider bounds
+			this.setValue(Math.min(this.getValue(), steps));
+		},
+		
 		setPosition: function (y) {
 			L.DomUtil.setPosition(this._element,
 								  L.point(0, this._adjust(y)));
@@ -81,6 +89,7 @@ L.Control.Zoomslider = (function(){
 				.on("zoomend", this._updateDisabled, this)
 				.whenReady(this._createSlider, this)
 				.whenReady(this._createKnob, this)
+				.whenReady(this._refresh, this)
 				.whenReady(this._updateSlider, this)
 				.whenReady(this._updateDisabled, this);
 
@@ -94,45 +103,30 @@ L.Control.Zoomslider = (function(){
 		},
 
 		_refresh: function () {
-			this._map
-				.removeControl(this)
-				.addControl(this);
+			var zoomLevels = this._zoomLevels();
+			if(zoomLevels < Infinity  && this._knob  && this._sliderBody) {
+				this._knob.setSteps(zoomLevels);
+				this._sliderBody.style.height
+					= (this.options.stepHeight * zoomLevels) + "px";
+			}
 		},
 		_zoomLevels: function(){
 			return this._map.getMaxZoom() - this._map.getMinZoom() + 1;
 		},
 
 		_createSlider: function () {
-			var zoomLevels = this._zoomLevels();
-
-			// No tilelayer probably
-			if(zoomLevels == Infinity){
-				return;
-			}
-
 			this._sliderBody = L.DomUtil.create('div',
 												this.options.styleNS + '-slider-body',
 												this._sliderElem);
-			this._sliderBody.style.height
-				= (this.options.stepHeight * zoomLevels) + "px";
 			L.DomEvent.on(this._sliderBody, 'click', this._onSliderClick, this);
 		},
 
 		_createKnob: function () {
-			var knobElem,
-				zoomLevels = this._zoomLevels();
-
-			// No tilelayer probably
-			if(zoomLevels == Infinity) {
-				return;
-			}
-
-			knobElem = L.DomUtil.create('div', this.options.styleNS + '-slider-knob',
+			var knobElem = L.DomUtil.create('div', this.options.styleNS + '-slider-knob',
 										this._sliderBody);
 			L.DomEvent.disableClickPropagation(knobElem);
 
 			this._knob = new Knob(knobElem,
-								  this._zoomLevels(),
 								  this.options.stepHeight,
 								  this.options.knobHeight)
 				.on('dragend', this._updateZoom, this);
