@@ -30,9 +30,6 @@ $ open spec/index.html # xdg-open on Linux
 ```
 $ brew install phantomjs  # or get it from http://phantomjs.org/
 $ npm install -g grunt-cli
-```
-Then just
-```
 $ grunt test
 ```
 
