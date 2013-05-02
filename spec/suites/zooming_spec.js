@@ -1,8 +1,10 @@
 describe('Zooming behavior', function() {
-  var map;
+  var map,
+      tileLayer;
 
   beforeEach(function() {
-    map = L.map(document.createElement('div'), { zoomAnimation: false, minZoom: 0, maxZoom: 19 }).setView([0,0], 16);
+    map = L.map(document.createElement('div'), { zoomAnimation: false }).setView([0,0], 16);
+    tileLayer = L.tileLayer('{x},{y},{z}', { minZoom: 0, maxZoom: 19 }).addTo(map);
   });
 
   describe('Buttons', function() {
