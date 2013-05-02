@@ -37,11 +37,11 @@ L.Control.Zoomslider = (function(){
 			// the conversion is just a common linear function.
 			this._k = -this._stepHeight;
 			this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
-			
+
 			// Update the value so that we're inside the new slider bounds
 			this.setValue(Math.min(this.getValue(), steps));
 		},
-		
+
 		setPosition: function (y) {
 			L.DomUtil.setPosition(this._element,
 								  L.point(0, this._adjust(y)));
@@ -108,6 +108,8 @@ L.Control.Zoomslider = (function(){
 				this._knob.setSteps(zoomLevels);
 				this._sliderBody.style.height
 					= (this.options.stepHeight * zoomLevels) + "px";
+				this._updateSlider();
+				this._updateDisabled();
 			}
 		},
 		_zoomLevels: function(){
