@@ -1,0 +1,20 @@
+{
+	"name": "Leaflet.zoomslider",
+	"version": "0.6.0",
+	"description": "A zoom slider widget for Leaflet",
+	"devDependencies": {
+		"jshint": "~1.1.0",
+		"mocha": "~1.9.0",
+		"karma": "~0.8.0",
+		"uglify-js": "~2.2.5",
+		"jake": "~0.5.10",
+		"expect.js": "~0.2.0",
+		"grunt": "~0.4.1"
+	},
+	"main": "src/L.Control.Zoomslider.js",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/kartena/Leaflet.zoomslider.git"
+	},
+	"keywords": ["maps", "leaflet"]
+}
