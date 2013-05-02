@@ -23,7 +23,7 @@ $ npm install
 
 ### Browser
 ```
-$ open spec/index.html # xdg-open in Linux
+$ open spec/index.html # xdg-open on Linux
 ```
 
 ### Node.js
