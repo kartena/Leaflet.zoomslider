@@ -1,4 +1,4 @@
-L.Control.Zoomslider = (function(){
+L.Control.Zoomslider = (function () {
 
 	var Knob = L.Draggable.extend({
 		initialize: function (element, stepHeight, knobHeight) {
@@ -8,7 +8,7 @@ L.Control.Zoomslider = (function(){
 			this._stepHeight = stepHeight;
 			this._knobHeight = knobHeight;
 
-			this.on('predrag', function() {
+			this.on('predrag', function () {
 				this._newPos.x = 0;
 				this._newPos.y = this._adjust(this._newPos.y);
 			}, this);
@@ -29,7 +29,7 @@ L.Control.Zoomslider = (function(){
 			return (y - this._m) / this._k;
 		},
 
-		setSteps: function(steps) {
+		setSteps: function (steps) {
 			var sliderHeight = steps * this._stepHeight;
 			this._maxValue = steps - 1;
 
@@ -37,9 +37,6 @@ L.Control.Zoomslider = (function(){
 			// the conversion is just a common linear function.
 			this._k = -this._stepHeight;
 			this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
-
-			// Update the value so that we're inside the new slider bounds
-			//this.setValue(Math.min(this.getValue(), steps));
 		},
 
 		setPosition: function (y) {
@@ -102,7 +99,7 @@ L.Control.Zoomslider = (function(){
 
 		_refresh: function () {
 			var zoomLevels = this._zoomLevels();
-			if(zoomLevels < Infinity  && this._knob  && this._sliderBody) {
+			if (zoomLevels < Infinity  && this._knob  && this._sliderBody) {
 				this._knob.setSteps(zoomLevels);
 				this._sliderBody.style.height
 					= (this.options.stepHeight * zoomLevels) + "px";
@@ -110,7 +107,7 @@ L.Control.Zoomslider = (function(){
 				this._updateDisabled();
 			}
 		},
-		_zoomLevels: function(){
+		_zoomLevels: function () {
 			return this._map.getMaxZoom() - this._map.getMinZoom() + 1;
 		},
 
@@ -171,11 +168,11 @@ L.Control.Zoomslider = (function(){
 			return zoomLevel - this._map.getMinZoom();
 		},
 
-		_updateZoom: function(){
+		_updateZoom: function () {
 			this._map.setZoom(this._toZoomLevel(this._knob.getValue()));
 		},
-		_updateSlider: function(){
-			if(this._knob){
+		_updateSlider: function () {
+			if (this._knob) {
 				this._knob.setValue(this._toSliderValue(this._map.getZoom()));
 			}
 		},
