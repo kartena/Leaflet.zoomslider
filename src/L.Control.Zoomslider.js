@@ -82,7 +82,7 @@ L.Control.Zoomslider = (function () {
 				'out', 'bottom', container, this._zoomOut);
 
 			map .on('zoomlevelschange', this._refresh, this)
-				.on("zoomend", this._updateSlider, this)
+				.on("zoomend", this._updateKnob, this)
 				.on("zoomend", this._updateDisabled, this)
 				.whenReady(this._createSlider, this)
 				.whenReady(this._createKnob, this)
@@ -92,7 +92,7 @@ L.Control.Zoomslider = (function () {
 		},
 
 		onRemove: function (map) {
-			map .off("zoomend", this._updateSlider)
+			map .off("zoomend", this._updateKnob)
 				.off("zoomend", this._updateDisabled)
 				.off('zoomlevelschange', this._refresh);
 		},
@@ -100,10 +100,8 @@ L.Control.Zoomslider = (function () {
 		_refresh: function () {
 			var zoomLevels = this._zoomLevels();
 			if (zoomLevels < Infinity  && this._knob  && this._sliderBody) {
-				this._knob.setSteps(zoomLevels);
-				this._sliderBody.style.height
-					= (this.options.stepHeight * zoomLevels) + "px";
-				this._updateSlider();
+				this._setSteps(zoomLevels);
+				this._updateKnob();
 				this._updateDisabled();
 			}
 		},
@@ -120,7 +118,7 @@ L.Control.Zoomslider = (function () {
 
 		_createKnob: function () {
 			var knobElem = L.DomUtil.create('div', this.options.styleNS + '-slider-knob',
-										this._sliderBody);
+											this._sliderBody);
 			L.DomEvent.disableClickPropagation(knobElem);
 
 			this._knob = new Knob(knobElem,
@@ -161,19 +159,23 @@ L.Control.Zoomslider = (function () {
 
 			return link;
 		},
-		_toZoomLevel: function (sliderValue) {
-			return sliderValue + this._map.getMinZoom();
+		_toZoomLevel: function (value) {
+			return value + this._map.getMinZoom();
 		},
-		_toSliderValue: function (zoomLevel) {
+		_toValue: function (zoomLevel) {
 			return zoomLevel - this._map.getMinZoom();
 		},
-
+		_setSteps: function (zoomLevels) {
+			this._sliderBody.style.height 
+				= (this.options.stepHeight * zoomLevels) + "px";
+			this._knob.setSteps(zoomLevels);
+		},
 		_updateZoom: function () {
 			this._map.setZoom(this._toZoomLevel(this._knob.getValue()));
 		},
-		_updateSlider: function () {
+		_updateKnob: function () {
 			if (this._knob) {
-				this._knob.setValue(this._toSliderValue(this._map.getZoom()));
+				this._knob.setValue(this._toValue(this._map.getZoom()));
 			}
 		},
 		_updateDisabled: function () {
