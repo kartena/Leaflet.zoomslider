@@ -1,9 +1,6 @@
 
-.leaflet-control-zoomslider a, .leaflet-control-zoomslider-slider {
-	background-color: #eee;
-}
-.leaflet-control-zoomslider a:hover {
-	background-color: #fff;
+.leaflet-control-zoomslider {
+  border: 3px solid #999;
 }
 .leaflet-control-zoomslider-slider {
 	padding-top: 4px;
@@ -13,7 +10,7 @@
 
 /* IE6-7 specific hacks */
 .leaflet-control-zoomslider-slider {
-	*width: 23px;
+	*width: 26px;
 }
 /* Fix IE6-divs having a too large min height  */
 .leaflet-control-zoomslider-slider-knob {
