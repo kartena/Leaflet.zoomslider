@@ -174,7 +174,7 @@ L.Control.Zoomslider = (function () {
 			this._map.setZoom(this._toZoomLevel(this._knob.getValue()));
 		},
 		_updateKnob: function () {
-			if (this._knob) {
+			if (this._zoomLevels() < Infinity  && this._knob  && this._sliderBody) {
 				this._knob.setValue(this._toValue(this._map.getZoom()));
 			}
 		},
