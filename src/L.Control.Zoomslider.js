@@ -60,7 +60,9 @@ L.Control.Zoomslider = (function () {
 			stepHeight: 9,
 			// Height of the knob div in px
 			knobHeight: 5,
-			styleNS: 'leaflet-control-zoomslider'
+			styleNS: 'leaflet-control-zoomslider',
+      //slider styleClass: set to 'simple' for slider bar without hashmarks (i.e. no background image)
+      styleClass: null
 		},
 
 		onAdd: function (map) {
@@ -110,9 +112,10 @@ L.Control.Zoomslider = (function () {
 		},
 
 		_createSlider: function () {
-			this._sliderBody = L.DomUtil.create('div',
-												this.options.styleNS + '-slider-body',
-												this._sliderElem);
+			var sliderStyleClass = !this.options.styleClass ? '' : ' ' + this.options.styleNS + '-' + this.options.styleClass;
+      this._sliderBody = L.DomUtil.create('div',
+                        this.options.styleNS + '-slider-body' + sliderStyleClass,
+                        this._sliderElem);
 			L.DomEvent.on(this._sliderBody, 'click', this._onSliderClick, this);
 		},
 

@@ -1,15 +1,24 @@
 /** Slider **/
 .leaflet-control-zoomslider-slider {
-	padding-top: 5px ;
+	padding-top: 5px;
 	padding-bottom: 5px;
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
 }
 
 .leaflet-control-zoomslider-slider-body {
 	background-image: url(images/zoom-slider.png);
 	background-repeat: repeat-y;
-	background-position: center 0px;
+	background-position: 47% 0px;
 	height: 100%;
 	cursor: default;
+}
+.leaflet-control-zoomslider-slider-body.leaflet-control-zoomslider-simple {
+	width: 1px;
+	border: 2px solid #999;
+	background-image: none;
+	background-color: #efefef;
+	margin: 0 auto;
 }
 
 .leaflet-control-zoomslider-slider-knob {
@@ -19,9 +28,17 @@
 	background-position: center;
  	-webkit-border-radius: 15px;
 	border-radius: 15px;
-	margin-left: 5px;
+	margin-left: 6px;
 	/*border: 5px; */
 	position:relative;
+}
+.leaflet-control-zoomslider-slider-body.leaflet-control-zoomslider-simple .leaflet-control-zoomslider-slider-knob {
+	height:4px;
+	background-color: #efefef;
+ 	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	border: 2px solid #444;
+	margin-left: -8px;
 }
 
 .leaflet-control-zoomslider-slider-body:hover {
@@ -47,29 +64,28 @@
 
 /** Leaflet Zoom Styles **/
 .leaflet-container .leaflet-control-zoomslider {
-	margin-left: 13px;
-	margin-top: 12px;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 .leaflet-control-zoomslider a {
-	width: 23px;
-	height: 22px;
+	width: 26px;
+	height: 26px;
 	text-align: center;
 	text-decoration: none;
 	color: black;
 	display: block;
 }
 .leaflet-control-zoomslider a:hover {
-	background-color: #fff;
-	color: #777;
+	background-color: #f4f4f4;
 }
 .leaflet-control-zoomslider-in {
-	font: bold 19px/24px Arial, Helvetica, sans-serif;
+	font: bold 18px 'Lucida Console', Monaco, monospace;
 }
 .leaflet-control-zoomslider-in:after{
 	content:"+"
 }
 .leaflet-control-zoomslider-out {
-	font: bold 23px/20px Tahoma, Verdana, sans-serif;
+	font: bold 22px 'Lucida Console', Monaco, monospace;
 }
 .leaflet-control-zoomslider-out:after{
 	content:"-"
@@ -81,8 +97,16 @@
 
 /* Touch */
 
+.leaflet-touch .leaflet-control-zoomslider-slider-body {
+	background-position: 10px 0px;
+}
 .leaflet-touch .leaflet-control-zoomslider-slider-knob {
-	width:20px;
+	width:19px;
+	margin-left: 5px;
+}
+.leaflet-touch .leaflet-control-zoomslider-slider-body.leaflet-control-zoomslider-simple .leaflet-control-zoomslider-slider-knob {
+	width:16px;
+	margin-left: -1px;
 }
 .leaflet-touch .leaflet-control-zoomslider a {
 	width: 30px;
@@ -94,7 +118,7 @@
 }
 .leaflet-touch .leaflet-control-zoomslider-out {
 	font-size: 28px;
-	line-height: 24px;
+	line-height: 30px;
 }
 
 .leaflet-touch .leaflet-control-zoomslider {

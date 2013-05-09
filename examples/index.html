@@ -22,14 +22,19 @@
       var map = L.TileJSON.createMap('map', osmTileJSON);
 
       // You can turn it off and add it manually by using the option zoomSliderControl: false
-      // var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false }});
-      // map.addControl(new L.Control.Zoomslider());
+
+      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomsliderControl: false }});
+      //map.addControl(new L.Control.Zoomslider());
+
+      // Add manually while passing a styleClass; 'simple' results in a slider bar without hashmarks (no background image)
+      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomsliderControl: false }});
+      //map.addControl(new L.Control.Zoomslider({ styleClass: 'simple' }));
 
       // You can restore the original control by turning the zoomslider off and turning the zoomControl on 
-      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: false, zoomControl: true }});
+      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomsliderControl: false, zoomControl: true }});
 
       // Or turn them both on. 
-      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapOptions: { zoomsliderControl: true, zoomControl: true }});
+      //var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomsliderControl: true, zoomControl: true }});
       
     </script>
   </body>
