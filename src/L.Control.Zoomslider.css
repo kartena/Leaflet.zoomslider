@@ -1,10 +1,10 @@
 /** Slider **/
-.leaflet-control-zoomslider-slider {
+.leaflet-control-zoomslider-wrap {
 	padding-top: 5px ;
 	padding-bottom: 5px;
 }
 
-.leaflet-control-zoomslider-slider-body {
+.leaflet-control-zoomslider-body {
 	background-image: url(images/zoom-slider.png);
 	background-repeat: repeat-y;
 	background-position: center 0px;
@@ -12,7 +12,7 @@
 	cursor: default;
 }
 
-.leaflet-control-zoomslider-slider-knob {
+.leaflet-control-zoomslider-knob {
 	width: 13px;
 	height:5px;
 	background-color: black;
@@ -24,22 +24,22 @@
 	position:relative;
 }
 
-.leaflet-control-zoomslider-slider-body:hover {
+.leaflet-control-zoomslider-body:hover {
 	cursor: pointer;
 }
 
-.leaflet-control-zoomslider-slider-knob:hover {
+.leaflet-control-zoomslider-knob:hover {
 	cursor: default;
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;
 }
 
 .leaflet-dragging .leaflet-control-zoomslider,
-.leaflet-dragging .leaflet-control-zoomslider-slider,
-.leaflet-dragging .leaflet-control-zoomslider-slider-body, 
+.leaflet-dragging .leaflet-control-zoomslider-wrap,
+.leaflet-dragging .leaflet-control-zoomslider-body, 
 .leaflet-dragging .leaflet-control-zoomslider a,
 .leaflet-dragging .leaflet-control-zoomslider a.leaflet-control-zoomslider-disabled,
-.leaflet-dragging .leaflet-control-zoomslider-slider-knob:hover  {
+.leaflet-dragging .leaflet-control-zoomslider-knob:hover  {
 	cursor: move;
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;
@@ -81,7 +81,7 @@
 
 /* Touch */
 
-.leaflet-touch .leaflet-control-zoomslider-slider-knob {
+.leaflet-touch .leaflet-control-zoomslider-knob {
 	width:20px;
 }
 .leaflet-touch .leaflet-control-zoomslider a {

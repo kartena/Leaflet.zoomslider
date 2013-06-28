@@ -1,22 +1,22 @@
 
-.leaflet-control-zoomslider a, .leaflet-control-zoomslider-slider {
+.leaflet-control-zoomslider a, .leaflet-control-zoomslider-wrap {
 	background-color: #eee;
 }
 .leaflet-control-zoomslider a:hover {
 	background-color: #fff;
 }
-.leaflet-control-zoomslider-slider {
+.leaflet-control-zoomslider-wrap {
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
 
 /* IE6-7 specific hacks */
-.leaflet-control-zoomslider-slider {
+.leaflet-control-zoomslider-wrap {
 	*width: 23px;
 }
 /* Fix IE6-divs having a too large min height  */
-.leaflet-control-zoomslider-slider-knob {
+.leaflet-control-zoomslider-knob {
 	*overflow: hidden;
 }
 

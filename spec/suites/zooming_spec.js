@@ -1,24 +1,26 @@
 describe('Zooming behavior', function() {
 	var map,
-		tileLayer;
+		tileLayer,
+		ui;
 
 	beforeEach(function() {
 		map = L.map(document.createElement('div'), { zoomAnimation: false }).setView([0,0], 16);
 		tileLayer = L.tileLayer('{x},{y},{z}', { minZoom: 0, maxZoom: 19 }).addTo(map);
+		ui = map.zoomsliderControl._ui;
 	});
 
 	describe('Buttons', function() {
 		it('Should be able to zoom in', function() {
 			map.setZoom(16);
 			expect(map.getZoom()).to.eql(16);
-			happen.click( map.zoomsliderControl._zoomInButton );
+			happen.click( ui.zoomIn );
 			expect(map.getZoom()).to.eql(17);
 		});
 
 		it('Should be able to zoom out', function() {
 			map.setZoom(16);
 			expect(map.getZoom()).to.eql(16);
-			happen.click( map.zoomsliderControl._zoomOutButton );
+			happen.click( ui.zoomOut );
 			expect(map.getZoom()).to.eql(15);
 		});
 	});
