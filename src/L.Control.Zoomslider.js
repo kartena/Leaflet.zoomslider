@@ -77,9 +77,9 @@ L.Control.Zoomslider = (function () {
 		},
 
 		onRemove: function (map) {
-			map .off('zoomlevelschange', this._update)
-				.off('zoomend',          this._updateKnobValue)
-				.off('zoomend',          this._updateDisabled);
+			map .off('zoomlevelschange', this._onZoomLevelsChange, this)
+				.off('zoomend',          this._updateKnobValue,    this)
+				.off('zoomend',          this._updateDisabled,     this);
 		},
 
 		_createUI: function () {
