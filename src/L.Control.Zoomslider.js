@@ -35,8 +35,8 @@ L.Control.Zoomslider = (function () {
 
 			// conversion parameters
 			// the conversion is just a common linear function.
-			this._k = -this._stepHeight;
-			this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
+			this._k = this._stepHeight;
+			this._m = this._stepHeight / 2 - this._knobHeight / 2;
 		},
 
 		setPosition: function (y) {
@@ -57,9 +57,9 @@ L.Control.Zoomslider = (function () {
 		options: {
 			position: 'topleft',
 			// Height of zoom-slider.png in px
-			stepHeight: 9,
-			// Height of the knob div in px
-			knobHeight: 5,
+			stepHeight: 8,
+			// Height of the knob div in px (including border)
+			knobHeight: 6,
 			styleNS: 'leaflet-control-zoomslider'
 		},
 
