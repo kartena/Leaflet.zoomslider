@@ -72,14 +72,16 @@ L.Control.Zoomslider = (function () {
 
 			map .whenReady(this._initKnob,           this)
 				.whenReady(this._initEvents,         this)
-				.whenReady(this._onZoomLevelsChange, this);
+				.whenReady(this._updateSize,         this)
+				.whenReady(this._updateKnobValue,    this)
+				.whenReady(this._updateDisabled,     this);
 			return this._ui.bar;
 		},
 
 		onRemove: function (map) {
-			map .off('zoomlevelschange', this._onZoomLevelsChange, this)
-				.off('zoomend',          this._updateKnobValue,    this)
-				.off('zoomend',          this._updateDisabled,     this);
+			map .off('zoomlevelschange',         this._updateSize,      this)
+				.off('zoomend zoomlevelschange', this._updateKnobValue, this)
+				.off('zoomend zoomlevelschange', this._updateDisabled,  this);
 		},
 
 		_createUI: function () {
@@ -118,9 +120,9 @@ L.Control.Zoomslider = (function () {
 		},
 		_initEvents: function (map) {
 			this._map
-				.on('zoomlevelschange', this._onZoomLevelsChange, this)
-				.on('zoomend',          this._updateKnobValue,    this)
-				.on('zoomend',          this._updateDisabled,     this);
+				.on('zoomlevelschange',         this._updateSize,      this)
+				.on('zoomend zoomlevelschange', this._updateKnobValue, this)
+				.on('zoomend zoomlevelschange', this._updateDisabled,  this);
 
 			L.DomEvent.on(this._ui.body,    'click', this._onSliderClick, this);
 			L.DomEvent.on(this._ui.zoomIn,  'click', this._zoomIn,        this);
@@ -136,11 +138,6 @@ L.Control.Zoomslider = (function () {
 
 			this._knob.setPosition(y);
 			this._updateMapZoom();
-		},
-		_onZoomLevelsChange: function () {
-			this._updateSize();
-			this._updateKnobValue();
-			this._updateDisabled();
 		},
 
 		_zoomIn: function (e) {
