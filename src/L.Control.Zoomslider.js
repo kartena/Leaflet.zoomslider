@@ -133,8 +133,7 @@ L.Control.Zoomslider = (function () {
 
 		_onSliderClick: function (e) {
 			var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-				y = L.DomEvent.getMousePosition(first).y
-					- L.DomUtil.getViewportOffset(this._ui.body).y; // Cache this?
+				y = L.DomEvent.getMousePosition(first, this._ui.body).y;
 
 			this._knob.setPosition(y);
 			this._updateMapZoom();
