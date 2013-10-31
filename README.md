@@ -36,4 +36,4 @@ $ grunt test
 
 
 [1]: https://github.com/kartena/Leaflet.Pancontrol
-[2]: https://github.com/CloudMade/Leaflet
+[2]: http://leafletjs.com/
