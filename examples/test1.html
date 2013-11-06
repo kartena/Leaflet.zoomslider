@@ -19,7 +19,7 @@
     <script src="osm.tilejson.js"></script>
     <script>
       // Test manual adding of the zoom slider after 2 seconds
-      var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomsliderControl: false }});
+      var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomControl: false }});
       setTimeout(function(){
           map.addControl(new L.Control.Zoomslider());
       }, 2000);

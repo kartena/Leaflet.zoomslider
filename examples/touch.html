@@ -21,7 +21,8 @@
 
     <script>
       // The zoomslider will be used by default if you include L.Control.Zoomslider
-      var map = L.TileJSON.createMap('map', osmTileJSON);
+      var map = L.TileJSON.createMap('map', osmTileJSON, { mapConfig: { zoomsliderControl: true, 
+        zoomControl: false }});
 
 
       // You can turn it off and add it manually by using the option zoomSliderControl: false

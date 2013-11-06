@@ -26,6 +26,8 @@
       
       var mapConfig = L.TileJSON.createMapConfig(osmTileJSON);
       mapConfig.layers = [layer1];
+      mapConfig.zoomsliderControl = true;
+      mapConfig.zoomControl = false;
 
       var map = new L.Map('map', mapConfig);
 

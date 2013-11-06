@@ -26,8 +26,10 @@
 
       var mapConfig = L.TileJSON.createMapConfig(osmTileJSON);
       mapConfig.layers = [];
-	  mapConfig.maxZoom = undefined;
-	  mapConfig.minZoom = undefined;
+      mapConfig.zoomsliderControl = true;
+      mapConfig.zoomControl = false;
+	    mapConfig.maxZoom = undefined;
+	    mapConfig.minZoom = undefined;
 	  
       var map = new L.Map('map', mapConfig);
 	  setTimeout(function(){
