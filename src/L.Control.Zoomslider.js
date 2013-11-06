@@ -188,11 +188,6 @@ L.Control.Zoomslider = (function () {
 	return Zoomslider;
 })();
 
-L.Map.mergeOptions({
-	zoomControl: false,
-	zoomsliderControl: true
-});
-
 L.Map.addInitHook(function () {
 	if (this.options.zoomsliderControl) {
 		this.zoomsliderControl = new L.Control.Zoomslider();
