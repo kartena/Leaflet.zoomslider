@@ -1,6 +1,14 @@
 {
 	"name": "Leaflet.zoomslider",
 	"version": "0.6.0",
+  "author": "Mattias Bengtsson <mattias.jc.bengtsson@gmail.com>",
+  "contributors": [
+    "Bryan Shelton (https://github.com/bshelton229)",
+    "Peter Thorin <peter.thorin@kartena.se> (https://github.com/pthorin)",
+    "Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman)",
+    "Poisbeau Mathieu <freepius44@gmail.com> (https://github.com/freepius44)",
+    "Alexis THOMAS (https://github.com/ath0mas)"
+  ],
 	"description": "A zoom slider widget for Leaflet",
 	"devDependencies": {
 		"jshint": "~1.1.0",
