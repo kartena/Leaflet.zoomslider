@@ -10,6 +10,9 @@
     "Alexis THOMAS (https://github.com/ath0mas)"
   ],
 	"description": "A zoom slider widget for Leaflet",
+  "dependencies": {
+    "leaflet": "~0.6.4"
+  },
 	"devDependencies": {
 		"jshint": "~1.1.0",
 		"mocha": "~1.9.0",
