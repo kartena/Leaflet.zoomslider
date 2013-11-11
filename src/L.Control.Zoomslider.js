@@ -35,11 +35,11 @@ L.Control.Zoomslider = (function () {
 
 			// conversion parameters
 			// the conversion is just a common linear function.
-            this._k = -this._stepHeight;
-            this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
+			this._k = -this._stepHeight;
+			this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
 		},
 
-		setPosition: function (y) { 
+		setPosition: function (y) {
 			L.DomUtil.setPosition(this._element,
 								  L.point(0, this._adjust(y)));
 		},
@@ -88,11 +88,11 @@ L.Control.Zoomslider = (function () {
 			var ui = {},
 				ns = this.options.styleNS;
 
-			ui.bar     = L.DomUtil.create('div', ns + ' leaflet-bar'),
-			ui.zoomIn  = this._createZoomBtn('in', 'top', ui.bar),
-			ui.wrap    = L.DomUtil.create('div', ns + '-wrap leaflet-bar-part', ui.bar),
-			ui.zoomOut = this._createZoomBtn('out', 'bottom', ui.bar),
-			ui.body    = L.DomUtil.create('div', ns + '-body', ui.wrap),
+			ui.bar     = L.DomUtil.create('div', ns + ' leaflet-bar');
+			ui.zoomIn  = this._createZoomBtn('in', 'top', ui.bar);
+			ui.wrap    = L.DomUtil.create('div', ns + '-wrap leaflet-bar-part', ui.bar);
+			ui.zoomOut = this._createZoomBtn('out', 'bottom', ui.bar);
+			ui.body    = L.DomUtil.create('div', ns + '-body', ui.wrap);
 			ui.knob    = L.DomUtil.create('div', ns + '-knob');
 
 			L.DomEvent.disableClickPropagation(ui.bar);
@@ -101,9 +101,9 @@ L.Control.Zoomslider = (function () {
 			return ui;
 		},
 		_createZoomBtn: function (zoomDir, end, container) {
-			var classDef = this.options.styleNS + '-' + zoomDir
-					+ ' leaflet-bar-part'
-					+ ' leaflet-bar-part-' + end,
+			var classDef = this.options.styleNS + '-' + zoomDir +
+					' leaflet-bar-part' +
+					' leaflet-bar-part-' + end,
 				link = L.DomUtil.create('a', classDef, container);
 
 			link.href = '#';
@@ -118,7 +118,7 @@ L.Control.Zoomslider = (function () {
 			this._knob.enable();
 			this._ui.body.appendChild(this._ui.knob);
 		},
-		_initEvents: function (map) {
+		_initEvents: function () {
 			this._map
 				.on('zoomlevelschange',         this._updateSize,      this)
 				.on('zoomend zoomlevelschange', this._updateKnobValue, this)
