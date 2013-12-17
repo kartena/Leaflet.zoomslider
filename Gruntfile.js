@@ -7,8 +7,24 @@ module.exports = function (grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		// Metadata.
-		pkg: grunt.file.readJSON('package.json')
+		pkg: grunt.file.readJSON('package.json'),
+		jshint: {
+			files: [
+				'Gruntfile.js',
+				'src/L.Control.Zoomslider.js',
+				'spec/**/*.js'
+			],
+			options: {
+				jshintrc: '.jshintrc',
+				ignores: [
+					'spec/happen.js',
+					'spec/karma.conf.js'
+				]
+			}
+		}
 	});
+
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 
 	// Test suite
 	grunt.registerTask('test', function () {
@@ -29,6 +45,7 @@ module.exports = function (grunt) {
 		karma.server.start(testConfig);
 	});
 
+
 	// Default task.
-	grunt.registerTask('default', ['test']);
+	grunt.registerTask('default', ['jshint', 'test']);
 };
