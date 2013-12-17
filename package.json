@@ -27,5 +27,6 @@
 		"type": "git",
 		"url": "git://github.com/kartena/Leaflet.zoomslider.git"
 	},
-	"keywords": ["maps", "leaflet"]
+	"keywords": ["maps", "leaflet"],
+	"license": "MIT"
 }
