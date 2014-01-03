@@ -1,35 +1,61 @@
-/*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-  // Project configuration.
-  grunt.initConfig({
-    // Metadata.
-    pkg: grunt.file.readJSON('package.json')
-  });
+	// Project configuration.
+	grunt.initConfig({
+		// Metadata.
+		pkg: grunt.file.readJSON('package.json'),
+		jshint: {
+			files: [
+				'Gruntfile.js',
+				'src/L.Control.Zoomslider.js',
+				'spec/**/*.js'
+			],
+			options: {
+				jshintrc: '.jshintrc',
+				ignores: [
+					'spec/happen.js'
+				]
+			}
+		},
+		karma: {
+			options: {
+				files: [
+					'node_modules/expect.js/expect.js',
+					'spec/happen.js',
+					'node_modules/leaflet/dist/leaflet-src.js',
+					'src/L.Control.Zoomslider.js',
+					'spec/before.js',
+					'spec/suites/*.js'
+				],
+				singleRun: true,
+				plugins: [
+					'karma-mocha',
+					'karma-chrome-launcher',
+					'karma-firefox-launcher',
+					'karma-phantomjs-launcher'
+				],
+				frameworks: ['mocha']
 
-  // Test suite
-  grunt.registerTask('test', function() {
-    var karma = require('karma'),
-        testConfig = { configFile: __dirname+'/spec/karma.conf.js' };
+			},
+			phantomjs: {
+				browsers: ['PhantomJS']
+			},
+			firefox: {
+				browsers: ['Firefox']
+			},
+			chrome : {
+				browsers: ['Chrome']
+			},
+			all: {
+				browsers: ['Chrome', 'Firefox', 'PhantomJS']
+			}
+		}
+	});
 
-    this.async();
-    testConfig.singleRun = true;
-    testConfig.autoWatch = false;
-    testConfig.browsers = ['PhantomJS'];
-    if (isArgv('--chrome')) {
-      testConfig.browsers.push('Chrome');
-    }
-    if (isArgv('--ff')) {
-      testConfig.browsers.push('Firefox');
-    }
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-karma');
 
-    karma.server.start(testConfig);
-
-    function isArgv(optName) {
-      return process.argv.indexOf(optName) !== -1;
-    }
-  });
-
-  // Default task.
-  grunt.registerTask('default', ['test']);
+	// Default task.
+	grunt.registerTask('default', ['jshint', 'karma:phantomjs']);
+	grunt.registerTask('test', ['jshint', 'karma:all']);
 };

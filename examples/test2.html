@@ -3,31 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="lib/Leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="../src/L.Control.Zoomslider.css" />
-    <!--[if lte IE 8]>
-        <link rel="stylesheet" href="lib/Leaflet/dist/leaflet.ie.css" />
-        <link rel="stylesheet" href="../src/L.Control.Zoomslider.ie.css" />
-    <![endif]-->
   </head>
   <body>
     <div id="map"></div>
-    <script src="lib/Leaflet/dist/leaflet-src.js"></script>
+    <script src="../node_modules/leaflet/dist/leaflet-src.js"></script>
     <script src="../src/L.Control.Zoomslider.js" ></script>
-    <script src="lib/leaflet-tilejson/src/tilejson.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="osm.tilejson.js"></script>
     <script>
-      // Test manual adding and removing of the zoom slider
-      var map = L.TileJSON.createMap('map', osmTileJSON, { 
-          mapConfig: { zoomControl: false }
+      var layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       });
+      
+      var map = L.map('map', {
+          zoomControl: false,
+          layers: [layer]
+      }).setView([57.7, 11.9], 8);
 
+      // Test manual adding and removing of the zoom slider
+      
       // Add a zoomend-event. This should remain after the control was removed.
       var i = 1;
-      map.on("zoomend", function(){
-        console.log("zoomend " + i++);
-      });
+      if(window.console) {
+          map.on("zoomend", function(){
+              console.log("zoomend " + i++);
+          });
+      }
 
       var control = new L.Control.Zoomslider();
 

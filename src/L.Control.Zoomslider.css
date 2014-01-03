@@ -103,3 +103,20 @@
 	box-shadow: none;
 	border: 4px solid rgba(0,0,0,0.3);
 }
+
+/* Old IE */
+
+.leaflet-oldie .leaflet-control-zoomslider-wrap {
+	width: 26px;
+}
+
+.leaflet-oldie .leaflet-control-zoomslider {
+	border: 1px solid #999;
+}
+
+.leaflet-oldie .leaflet-control-zoomslider-in {
+	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '+');
+}
+.leaflet-oldie .leaflet-control-zoomslider-out {
+	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '-');
+}

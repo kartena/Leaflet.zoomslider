@@ -1,31 +1,31 @@
 {
 	"name": "leaflet.zoomslider",
-	"version": "0.6.2",
-  "author": "Mattias Bengtsson <mattias.jc.bengtsson@gmail.com>",
-  "contributors": [
-    "Bryan Shelton (https://github.com/bshelton229)",
-    "Peter Thorin <peter.thorin@kartena.se> (https://github.com/pthorin)",
-    "Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman)",
-    "Poisbeau Mathieu <freepius44@gmail.com> (https://github.com/freepius44)",
-    "Alexis THOMAS (https://github.com/ath0mas)"
-  ],
+	"version": "0.7.0",
+	"author": "Mattias Bengtsson <mattias.jc.bengtsson@gmail.com>",
+	"contributors": [
+		"Bryan Shelton (https://github.com/bshelton229)",
+		"Peter Thorin <peter.thorin@kartena.se> (https://github.com/pthorin)",
+		"Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman)",
+		"Poisbeau Mathieu <freepius44@gmail.com> (https://github.com/freepius44)",
+		"Alexis THOMAS (https://github.com/ath0mas)"
+	],
 	"description": "A zoom slider widget for Leaflet",
-  "dependencies": {
-    "leaflet": "~0.6.4"
-  },
+	"dependencies": {
+		"leaflet": "~0.7.1"
+	},
 	"devDependencies": {
-		"jshint": "~1.1.0",
 		"mocha": "~1.9.0",
-		"karma": "~0.8.0",
-		"uglify-js": "~2.2.5",
-		"jake": "~0.5.10",
 		"expect.js": "~0.2.0",
-		"grunt": "~0.4.1"
+		"grunt": "~0.4.1",
+		"grunt-karma": "~0.6.2",
+		"grunt-contrib-jshint": "~0.7.2",
+		"karma-mocha": "~0.1.1"
 	},
 	"main": "src/L.Control.Zoomslider.js",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/kartena/Leaflet.zoomslider.git"
 	},
-	"keywords": ["maps", "leaflet"]
+	"keywords": ["maps", "leaflet"],
+	"license": "MIT"
 }
