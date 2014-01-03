@@ -3,33 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="lib/Leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="../src/L.Control.Zoomslider.css" />
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="lib/Leaflet/dist/leaflet.ie.css" />
+        <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.ie.css" />
         <link rel="stylesheet" href="../src/L.Control.Zoomslider.ie.css" />
     <![endif]-->
   </head>
   <body>
     <div id="map"></div>
-    <script src="lib/Leaflet/dist/leaflet-src.js"></script>
+    <script src="../node_modules/leaflet/dist/leaflet-src.js"></script>
     <script src="../src/L.Control.Zoomslider.js" ></script>
-    <script src="lib/leaflet-tilejson/src/tilejson.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="osm.tilejson.js"></script>
     <script>
+      var layer1 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 12,
+          minZoom: 5
+      });
+      var layer2 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      });
 
-      var layer1 = L.TileJSON.createTileLayer(osmTileJSON);
-      osmTileJSON.maxzoom = 18;
-      osmTileJSON.minzoom = 0;
-      var layer2 = L.TileJSON.createTileLayer(osmTileJSON);
-      
-      var mapConfig = L.TileJSON.createMapConfig(osmTileJSON);
-      mapConfig.layers = [layer1];
-      mapConfig.zoomsliderControl = true;
-      mapConfig.zoomControl = false;
-
-      var map = new L.Map('map', mapConfig);
+      var map = L.map('map', {
+          zoomsliderControl: true,
+          zoomControl: false,
+          layers: [layer1]
+      }).setView([57.7, 11.9], 8);
 
       L.control.layers({
           "Few zoomlevels": layer1,
