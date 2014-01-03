@@ -1,35 +1,34 @@
-/*global module:false*/
-module.exports = function(grunt) {
+function isArgv(optName) {
+	return process.argv.indexOf(optName) !== -1;
+}
 
-  // Project configuration.
-  grunt.initConfig({
-    // Metadata.
-    pkg: grunt.file.readJSON('package.json')
-  });
+module.exports = function (grunt) {
 
-  // Test suite
-  grunt.registerTask('test', function() {
-    var karma = require('karma'),
-        testConfig = { configFile: __dirname+'/spec/karma.conf.js' };
+	// Project configuration.
+	grunt.initConfig({
+		// Metadata.
+		pkg: grunt.file.readJSON('package.json')
+	});
 
-    this.async();
-    testConfig.singleRun = true;
-    testConfig.autoWatch = false;
-    testConfig.browsers = ['PhantomJS'];
-    if (isArgv('--chrome')) {
-      testConfig.browsers.push('Chrome');
-    }
-    if (isArgv('--ff')) {
-      testConfig.browsers.push('Firefox');
-    }
+	// Test suite
+	grunt.registerTask('test', function () {
+		var karma = require('karma'),
+			testConfig = { configFile: __dirname + '/spec/karma.conf.js' };
 
-    karma.server.start(testConfig);
+		this.async();
+		testConfig.singleRun = true;
+		testConfig.autoWatch = false;
+		testConfig.browsers = ['PhantomJS'];
+		if (isArgv('--chrome')) {
+			testConfig.browsers.push('Chrome');
+		}
+		if (isArgv('--ff')) {
+			testConfig.browsers.push('Firefox');
+		}
 
-    function isArgv(optName) {
-      return process.argv.indexOf(optName) !== -1;
-    }
-  });
+		karma.server.start(testConfig);
+	});
 
-  // Default task.
-  grunt.registerTask('default', ['test']);
+	// Default task.
+	grunt.registerTask('default', ['test']);
 };

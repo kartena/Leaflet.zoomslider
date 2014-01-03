@@ -10,12 +10,14 @@
 		module.exports = factory(L);
 	} else {
 		// Browser globals
-		if (typeof window.L === 'undefined')
-			throw 'Leaflet must be loaded first';
+		if (typeof window.L === 'undefined') {
+			throw new Error('Leaflet must be loaded first');
+        }
 		factory(window.L);
 	}
 }(function (L) {
 	'use strict';
+
 	L.Control.Zoomslider = (function () {
 
 		var Knob = L.Draggable.extend({
@@ -88,16 +90,16 @@
 									  this.options.stepHeight,
 									  this.options.knobHeight);
 
-				map .whenReady(this._initKnob,           this)
-					.whenReady(this._initEvents,         this)
-					.whenReady(this._updateSize,         this)
-					.whenReady(this._updateKnobValue,    this)
-					.whenReady(this._updateDisabled,     this);
+				map.whenReady(this._initKnob,        this)
+					.whenReady(this._initEvents,      this)
+					.whenReady(this._updateSize,      this)
+					.whenReady(this._updateKnobValue, this)
+					.whenReady(this._updateDisabled,  this);
 				return this._ui.bar;
 			},
 
 			onRemove: function (map) {
-				map .off('zoomlevelschange',         this._updateSize,      this)
+				map.off('zoomlevelschange',         this._updateSize,      this)
 					.off('zoomend zoomlevelschange', this._updateKnobValue, this)
 					.off('zoomend zoomlevelschange', this._updateDisabled,  this);
 			},
