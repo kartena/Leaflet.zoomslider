@@ -5,7 +5,7 @@ describe('Zooming behavior', function () {
 		ui;
 
 	beforeEach(function () {
-		map = createMap({ zoomAnimation: false });
+		map = createMap({ zoomAnimation: false, zoomsliderControl: true });
 		tileLayer = L.tileLayer('{x},{y},{z}', { minZoom: 0, maxZoom: 19 }).addTo(map);
 		ui = map.zoomsliderControl._ui;
 	});

@@ -4,7 +4,7 @@ describe('Control', function () {
 		tileLayer;
 
 	it('Should add itself to the map unless zoomSliderControl is false', function () {
-		map = createMap({ zoomAnimation: false });
+		map = createMap({ zoomAnimation: false, zoomsliderControl: true });
 		expect(map.zoomsliderControl).to.be.an(L.Control.Zoomslider);
 	});
 
@@ -14,7 +14,7 @@ describe('Control', function () {
 	});
 
 	it('The slider should move to the correct position when a layer is added', function () {
-		map = createMap({ zoomAnimation: false });
+		map = createMap({ zoomAnimation: false, zoomsliderControl: true });
 		tileLayer = L.tileLayer('{x},{y},{z}', { minZoom: 0, maxZoom: 19 }).addTo(map);
 		expect(map.zoomsliderControl._knob.getValue()).to.eql(16);
 	});
