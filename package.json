@@ -15,10 +15,11 @@
 	},
 	"devDependencies": {
 		"mocha": "~1.9.0",
-		"karma": "~0.8.0",
 		"expect.js": "~0.2.0",
 		"grunt": "~0.4.1",
-		"grunt-contrib-jshint": "~0.7.2"
+		"grunt-karma": "~0.6.2",
+		"grunt-contrib-jshint": "~0.7.2",
+		"karma-mocha": "~0.1.1"
 	},
 	"main": "src/L.Control.Zoomslider.js",
 	"repository": {

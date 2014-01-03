@@ -1,7 +1,3 @@
-function isArgv(optName) {
-	return process.argv.indexOf(optName) !== -1;
-}
-
 module.exports = function (grunt) {
 
 	// Project configuration.
@@ -17,35 +13,49 @@ module.exports = function (grunt) {
 			options: {
 				jshintrc: '.jshintrc',
 				ignores: [
-					'spec/happen.js',
-					'spec/karma.conf.js'
+					'spec/happen.js'
 				]
+			}
+		},
+		karma: {
+			options: {
+				files: [
+					'node_modules/expect.js/expect.js',
+					'spec/happen.js',
+					'node_modules/leaflet/dist/leaflet-src.js',
+					'src/L.Control.Zoomslider.js',
+					'spec/before.js',
+					'spec/suites/*.js'
+				],
+				singleRun: true,
+				plugins: [
+					'karma-mocha',
+					'karma-chrome-launcher',
+					'karma-firefox-launcher',
+					'karma-phantomjs-launcher'
+				],
+				frameworks: ['mocha']
+
+			},
+			phantomjs: {
+				browsers: ['PhantomJS']
+			},
+			firefox: {
+				browsers: ['Firefox']
+			},
+			chrome : {
+				browsers: ['Chrome']
+			},
+			all: {
+				browsers: ['Chrome', 'Firefox', 'PhantomJS']
 			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-
-	// Test suite
-	grunt.registerTask('test', function () {
-		var karma = require('karma'),
-			testConfig = { configFile: __dirname + '/spec/karma.conf.js' };
-
-		this.async();
-		testConfig.singleRun = true;
-		testConfig.autoWatch = false;
-		testConfig.browsers = ['PhantomJS'];
-		if (isArgv('--chrome')) {
-			testConfig.browsers.push('Chrome');
-		}
-		if (isArgv('--ff')) {
-			testConfig.browsers.push('Firefox');
-		}
-
-		karma.server.start(testConfig);
-	});
-
+	grunt.loadNpmTasks('grunt-karma');
 
 	// Default task.
-	grunt.registerTask('default', ['jshint', 'test']);
+	grunt.registerTask('default', ['jshint', 'karma:phantomjs']);
+	grunt.registerTask('test', ['jshint', 'karma:all']);
 };
