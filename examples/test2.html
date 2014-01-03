@@ -28,9 +28,11 @@
       
       // Add a zoomend-event. This should remain after the control was removed.
       var i = 1;
-      map.on("zoomend", function(){
-        console.log("zoomend " + i++);
-      });
+      if(window.console) {
+          map.on("zoomend", function(){
+              console.log("zoomend " + i++);
+          });
+      }
 
       var control = new L.Control.Zoomslider();
 
