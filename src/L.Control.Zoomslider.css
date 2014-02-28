@@ -68,7 +68,7 @@
 	font: bold 22px 'Lucida Console', Monaco, monospace;
 }
 .leaflet-control-zoomslider-out:after{
-	content:"-"
+	content:"−"
 }
 .leaflet-control-zoomslider a.leaflet-control-zoomslider-disabled {
 	cursor: default;
