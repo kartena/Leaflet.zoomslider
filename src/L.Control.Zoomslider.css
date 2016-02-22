@@ -74,6 +74,11 @@
 	cursor: default;
 	color: #bbb;
 }
+.leaflet-control-zoomslider div{
+    	box-sizing: content-box;
+    	-moz-box-sizing: content-box;
+    	-webkit-box-sizing: content-box;
+}
 
 /* Touch */
 .leaflet-touch .leaflet-control-zoomslider-body {
