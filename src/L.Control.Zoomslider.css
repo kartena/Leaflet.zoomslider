@@ -21,6 +21,12 @@
 	border-radius: 2px;
 	border: 1px solid #000;
 	margin-left: -6px;
+
+	-webkit-transition: transform 100ms linear 0ms;
+	-moz-transition: transform 100ms linear 0ms;
+	-ms-transition: transform 100ms linear 0ms;
+	-o-transition: transform 100ms linear 0ms;
+	transition: transform 100ms linear 0ms;
 }
 .leaflet-control-zoomslider-body:hover {
 	cursor: pointer;
@@ -73,6 +79,33 @@
 .leaflet-control-zoomslider a.leaflet-control-zoomslider-disabled {
 	cursor: default;
 	color: #bbb;
+}
+
+.leaflet-control-zoomslider .zoom-presets-wrapper {
+	position: absolute;
+	top: 26px;
+	bottom: 27px;
+	width: 50px;
+	left: 28px;
+	font-family: "Roboto", sans-serif;
+}
+
+.leaflet-control-zoomslider .zoom-preset-item {
+	position: absolute;
+  height: 16px;
+  padding: 0 7px;
+  line-height: 16px;
+  color: #000;
+  background-color: #fff;
+  white-space: nowrap;
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  text-align: center;
+  margin-left: 4px;
+}
+
+.leaflet-control-zoomslider .zoom-preset-item:hover {
+	cursor: pointer;
 }
 
 /* Touch */
