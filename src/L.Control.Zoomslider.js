@@ -160,21 +160,23 @@
 			},
 
 			_zoomIn: function (e) {
-				this._map.zoomIn(e.shiftKey ? 3 : 1);
+				var delta = this._map.options.zoomDelta || 0;
+				this._map.zoomIn(e.shiftKey ? 3 * delta : delta);
 			},
 			_zoomOut: function (e) {
-				this._map.zoomOut(e.shiftKey ? 3 : 1);
+				var delta = this._map.options.zoomDelta || 0;
+				this._map.zoomOut(e.shiftKey ? 3 * delta : delta);
 			},
 
 			_zoomLevels: function () {
-				var zoomLevels = this._map.getMaxZoom() - this._map.getMinZoom() + 1;
+				var zoomLevels = (this._map.getMaxZoom() - this._map.getMinZoom()) / this._map.options.zoomDelta + 1;
 				return zoomLevels < Infinity ? zoomLevels : 0;
 			},
 			_toZoomLevel: function (value) {
-				return value + this._map.getMinZoom();
+				return value * this._map.options.zoomDelta + this._map.getMinZoom();
 			},
 			_toValue: function (zoomLevel) {
-				return zoomLevel - this._map.getMinZoom();
+				return (zoomLevel - this._map.getMinZoom()) / this._map.options.zoomDelta;
 			},
 
 			_updateSize: function () {
