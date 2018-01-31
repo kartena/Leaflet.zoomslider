@@ -7,7 +7,8 @@
     "Peter Thorin <peter.thorin@kartena.se> (https://github.com/pthorin)",
     "Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman)",
     "Poisbeau Mathieu <freepius44@gmail.com> (https://github.com/freepius44)",
-    "Alexis THOMAS (https://github.com/ath0mas)"
+    "Alexis THOMAS (https://github.com/ath0mas)",
+	"Andrej Shadura (https://github.com/andrewshadura)"
   ],
   "description": "A zoom slider widget for Leaflet",
   "dependencies": {},
