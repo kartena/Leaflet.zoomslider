@@ -68,7 +68,7 @@
 	font: bold 22px 'Lucida Console', Monaco, monospace;
 }
 .leaflet-control-zoomslider-out:after{
-	content:"\002D"
+	content:"\2212"
 }
 .leaflet-control-zoomslider a.leaflet-control-zoomslider-disabled {
 	cursor: default;
@@ -118,5 +118,5 @@
 	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '\u002B');
 }
 .leaflet-oldie .leaflet-control-zoomslider-out {
-	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '\u002D');
+	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '\u2212');
 }
