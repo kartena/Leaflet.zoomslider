@@ -11,6 +11,7 @@
 	border-width: 0px 9px 0px 9px;
 	background-color: black;
 	margin: 0 auto;
+	box-sizing: content-box;
 }
 .leaflet-control-zoomslider-knob {
 	position: relative;
@@ -21,6 +22,7 @@
 	border-radius: 2px;
 	border: 1px solid #000;
 	margin-left: -6px;
+	box-sizing: content-box;
 }
 .leaflet-control-zoomslider-body:hover {
 	cursor: pointer;
